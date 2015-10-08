@@ -10,6 +10,7 @@ public class TestClient {
 
 	private final static int CONN_PORT = 45560;
 	private final static String HOST_NAME = "localhost";
+	private final static String ERROR_MESSAGE = "|ERROR|ERROR|ERROR|";
 	private static Socket myConn;
 	private static PrintWriter sendOut;
 	private static BufferedReader readIn;
