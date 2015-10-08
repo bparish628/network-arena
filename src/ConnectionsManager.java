@@ -62,23 +62,18 @@ public class ConnectionsManager {
 				pConReads[0] = new BufferedReader(new InputStreamReader(plyrConns[0].getInputStream()));
 				ss.close();
 				String tmpResp = pConReads[0].readLine();
-				System.out.println("Got something!");
 				pConOuts[0].println(portNums[i]);
 				pConOuts[0].close();
 				pConReads[0].close();
 				plyrConns[0].close();
 				if(tmpResp.equals("ACK")) {
-					System.out.println("It's an ACK!");
 					ss = new ServerSocket(portNums[i]);
 					plyrConns[i+1] = ss.accept();
-					System.out.printf("ACCEPT #%d!\n",i+1);
 					pConReads[i+1] = new BufferedReader(new InputStreamReader(plyrConns[i+1].getInputStream()));
 					pConOuts[i+1] = new PrintWriter(plyrConns[i+1].getOutputStream(),true);
-					System.out.println("Waiting for reconnect...");
 					tmpResp = pConReads[i+1].readLine();
-					System.out.printf("RECONNECTION! MESSAGE: %s\n", tmpResp);
 					numConnections++;
-					System.out.printf("Socket #%d successfully connected!\n",i+1);
+					System.out.printf("Socket #%d successfully connected!\nMessage: %s\n",i+1,tmpResp);
 				} else {
 					Exception a = new Exception(
 							String.format("Something weird happened: \"%s\" was received, not \"ACK\"!",tmpResp));
