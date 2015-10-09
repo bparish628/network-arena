@@ -7,12 +7,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import ui.login.LoginController;
 import ui.login.User;
 
-public class LoginView {
+public class LoginView{
 
-    User user = new User();
     GridPane container = new GridPane();
     public Scene ui = new Scene(container, 400, 500);
     private LoginController LoginCtrl = new LoginController();

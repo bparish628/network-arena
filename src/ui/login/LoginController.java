@@ -3,14 +3,23 @@ package ui.login;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import ui.ApplicationController;
 import ui.login.User;
+
+import java.awt.*;
 
 public class LoginController {
     /*User*/
-    private User user;
+    public User user;
 
     /*Stats*/
     private Label selectedDisplay = new Label();
@@ -58,6 +67,7 @@ public class LoginController {
             if ((!getUsernameField().getText().isEmpty() && !getHostField().getText().isEmpty() && getClasses().getSelectedToggle() != null)) {
                 user.setUsername(getUsernameField().getText());
                 user.setHostname(getHostField().getText());
+                new ApplicationController().goToStage(2);
             }
         });
     }

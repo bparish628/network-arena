@@ -1,22 +1,43 @@
 package ui;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import ui.login.LoginView;
 
 public class ApplicationController extends Application{
+
+    public static Stage appStage;
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage start) {
-        /*Set Application Title*/
-        start.setTitle("The Network Arena");
+    public void start(Stage stage) {
+        appStage = stage;
 
-        /*Set the Login page*/
-        start.setScene(new LoginView().getPage());
-        start.show();
+        /*Set Application Title*/
+        appStage.setTitle("The Network Arena");
+        /*Go to Login View*/
+        goToStage(1);
+    }
+
+    public void goToStage(int num){
+        appStage.close();
+        switch(num){
+            case 1:
+                appStage.setScene(new LoginView().getPage());
+                break;
+            case 2:
+                appStage.setScene(new Scene(new GridPane(), 700,700));
+                break;
+        }
+        appStage.show();
     }
 }
