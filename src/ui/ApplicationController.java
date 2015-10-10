@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import ui.fight.FightView;
 import ui.login.LoginView;
 
 public class ApplicationController extends Application{
@@ -35,7 +36,7 @@ public class ApplicationController extends Application{
                 appStage.setScene(new LoginView().getPage());
                 break;
             case 2:
-                appStage.setScene(new Scene(new GridPane(), 700,700));
+                appStage.setScene(new FightView().getPage());
                 break;
         }
         appStage.show();

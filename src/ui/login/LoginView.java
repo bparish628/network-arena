@@ -14,11 +14,11 @@ import ui.login.User;
 public class LoginView{
 
     GridPane container = new GridPane();
-    public Scene ui = new Scene(container, 400, 500);
+    private Scene view = new Scene(container, 400, 500);
     private LoginController LoginCtrl = new LoginController();
 
     public LoginView() {
-        /*Setting the ui parameters*/
+        /*Setting the view parameters*/
         for(int i = 0; i < 3; i++){
             container.getColumnConstraints().add(new ColumnConstraints(100));
         }
@@ -79,7 +79,7 @@ public class LoginView{
     }
 
     public Scene getPage(){
-        return ui;
+        return view;
     }
 
 

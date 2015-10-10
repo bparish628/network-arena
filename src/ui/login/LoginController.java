@@ -19,7 +19,7 @@ import java.awt.*;
 
 public class LoginController {
     /*User*/
-    public User user;
+    private User user;
 
     /*Stats*/
     private Label selectedDisplay = new Label();

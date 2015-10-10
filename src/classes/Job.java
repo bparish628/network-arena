@@ -44,7 +44,7 @@ public class Job {
         this.hp = 50;
         this.job = "Magic";
         this.action1 = "Fireball";
-        this.action2 = "Frostbold";
+        this.action2 = "Frostbolt";
         this.action3 = "Lightning";
         this.image = new Image("/ui/images/magic.png", 50, 75, false, false);
     }

@@ -8,6 +8,9 @@ public class User {
     private String hostname;
     private Job selectedClass;
 
+    /*Condition of character*/
+    private int currentHP;
+
     public User(){
         username = null;
         hostname = null;
@@ -26,6 +29,10 @@ public class User {
         return selectedClass;
     }
 
+    public int getCurrentHP(){
+        return currentHP;
+    }
+
     public void setUsername(String username){
         this.username = username;
     }
@@ -36,5 +43,10 @@ public class User {
 
     public void setSelectedClass(String classString){
         this.selectedClass = new Job(classString);
+        this.currentHP = this.selectedClass.getHp();
+    }
+
+    public void setCurrentHP(int hp){
+        this.currentHP = hp;
     }
 }
