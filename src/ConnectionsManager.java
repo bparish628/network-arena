@@ -119,8 +119,9 @@ public class ConnectionsManager {
 	 * Adds a connection with the current host name.
 	 * @param port The port number to connect to.
 	 * @throws Exception Thrown if the number of connections is already at maximum or if the connection fails.
+	 * @return The response from the client when connection to port is established.
 	 */
-	public void addConnection(int port) throws Exception {
+	public String addConnection(int port) throws Exception {
 		if(numConnections < MAX_CONNS) {
 			try {
 				ServerSocket ss = new ServerSocket(DEFAULT_PORT);
@@ -131,14 +132,18 @@ public class ConnectionsManager {
 				String rsp = pConReads[0].readLine();
 				pConOuts[0].println(port);
 				closeDefaults();
+				ss.close();
+				ss = new ServerSocket(port);
 				plyrCons[numConnections+1] = ss.accept();
 				ss.close();
 				pConReads[numConnections+1] = new BufferedReader(new InputStreamReader(plyrCons[numConnections+1].getInputStream()));
 				pConOuts[numConnections+1] = new PrintWriter(plyrCons[numConnections+1].getOutputStream(),true);
+				rsp = pConReads[numConnections+1].readLine();
 				System.out.printf("Socket #%d successfully connected!\nMessage: %s\n",++numConnections,rsp);
 				if(numConnections == 4) {
 					readyForPlay = true;
 				}
+				return rsp;
 			} catch(Exception e) {
 				System.out.println("An error occurred while opening socket.");
 				System.out.println("---Socket attempt information---");
@@ -263,7 +268,7 @@ public class ConnectionsManager {
 	 * @throws Exception Thrown if the socket is not open for writing or if the index is invalid.
 	 */
 	public void sendMessage(String message, int index) throws Exception {
-		if(index < numConnections && index >= 0) {
+		if(index < numConnections+1 && index >= 0) {
 			if(plyrCons[index] != null) {
 				pConOuts[index].println(message);
 			} else {
