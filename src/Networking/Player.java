@@ -1,3 +1,4 @@
+package Networking;
 
 public class Player {
 	private final static int MAX_PLAYERS = 4;
