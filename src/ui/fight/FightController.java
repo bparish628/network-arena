@@ -39,6 +39,9 @@ public class FightController {
 
         /*Set up other players*/
         players = new Player[3];
+        for(int i = 0; i < players.length; i++){
+            players[i] = new Player();
+        }
 
         setPlayer(players[0], "Kale", "Magic");
         setPlayer(players[1], "John", "Range");
