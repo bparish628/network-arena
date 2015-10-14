@@ -7,9 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
-import ui.login.LoginController;
-import ui.login.User;
 
 public class LoginView{
 
@@ -56,20 +53,18 @@ public class LoginView{
         container.add(LoginCtrl.getHpLabel(), 0, 5);
         container.add(LoginCtrl.getHpDisplay(), 1, 5);
 
-        container.add(LoginCtrl.getActionLabel(), 0, 6);
-        container.add(LoginCtrl.getActionDisplay(1), 1, 6);
-        container.add(LoginCtrl.getActionDisplay(2), 1, 7);
-        container.add(LoginCtrl.getActionDisplay(3), 1, 8);
+        container.add(LoginCtrl.getAttackLabel(), 0, 6);
+        container.add(LoginCtrl.getAttackDisplay(), 1, 6);
+
+        container.add(LoginCtrl.getDefenseLabel(), 0, 7);
+        container.add(LoginCtrl.getDefenseDisplay(), 1, 7);
+
+        container.add(LoginCtrl.getActionLabel(), 0, 8);
+        container.add(LoginCtrl.getActionDisplay(1), 1, 8);
+        container.add(LoginCtrl.getActionDisplay(2), 1, 9);
+        container.add(LoginCtrl.getActionDisplay(3), 1, 10);
 
         container.add(LoginCtrl.getImageDisplay(), 2, 5, 1, 3);
-
-        /*Setting up the host field*/
-        HBox hostPane = new HBox();
-        hostPane.setPadding(new Insets(30, 0, 45, 0));
-        hostPane.setSpacing(10);
-
-        hostPane.getChildren().addAll(LoginCtrl.getHostLabel(), LoginCtrl.getHostField());
-        container.add(hostPane, 0, 9, 3, 1);
 
         /*Setting up connect button*/
         HBox boxBtn = new HBox(10);

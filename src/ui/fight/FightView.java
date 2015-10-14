@@ -6,7 +6,7 @@ import javafx.scene.layout.HBox;
 
 public class FightView {
     BorderPane container = new BorderPane();
-    private Scene view = new Scene(container, 700, 700);
+    private Scene view = new Scene(container, 535, 550);
     private FightController FightCtrl = new FightController();
 
     public FightView() {

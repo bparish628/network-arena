@@ -1,9 +1,11 @@
-package classes;
+package common;
 
 import javafx.scene.image.Image;
 
 public class Job {
     private int hp;
+    private int attack;
+    private int defense;
     private String job;
     private Image image;
     private String action1;
@@ -22,8 +24,10 @@ public class Job {
         }
     }
 
-    public Job(String job, int hp, String action1, String action2, String action3, String image){
+    public Job(String job, int hp, int attack, int defense, String action1, String action2, String action3, String image){
         this.hp = hp;
+        this.attack = attack;
+        this.defense = defense;
         this.job = job;
         this.action1 = action1;
         this.action2 = action2;
@@ -32,34 +36,48 @@ public class Job {
     }
 
     private void setMelee(){
-        this.hp = 100;
+        this.hp = 400;
+        this.attack = 100;
+        this.defense = 60;
         this.job = "Melee";
-        this.action1 = "Power Strike";
+        this.action1 = "Attack";
         this.action2 = "Defend";
-        this.action3 = "Roll";
+        this.action3 = "Whirlwind";
         this.image = new Image("/ui/images/melee.png", 50, 75, false, false);
     }
 
     private void setMagic(){
-        this.hp = 50;
+        this.hp = 300;
+        this.attack = 140;
+        this.defense = 50;
         this.job = "Magic";
-        this.action1 = "Fireball";
-        this.action2 = "Frostbolt";
-        this.action3 = "Lightning";
+        this.action1 = "Attack";
+        this.action2 = "Guard";
+        this.action3 = "Firestorm";
         this.image = new Image("/ui/images/magic.png", 50, 75, false, false);
     }
 
     private void setRange(){
-        this.hp = 70;
+        this.hp = 350;
+        this.attack = 90;
+        this.defense = 80;
         this.job = "Range";
-        this.action1 = "Shoot";
-        this.action2 = "Multishot";
-        this.action3 = "Steal";
+        this.action1 = "Attack";
+        this.action2 = "Hide";
+        this.action3 = "Multishot";
         this.image = new Image("/ui/images/range.png", 50, 75, false, false);
     }
 
     public int getHp(){
         return hp;
+    }
+
+    public int getDefense(){
+        return defense;
+    }
+
+    public int getAttack(){
+        return attack;
     }
 
     public String getJob(){

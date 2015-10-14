@@ -1,19 +1,17 @@
-package ui.login;
+package common;
 
-import classes.Job;
+import common.Job;
 
-public class User {
+public class Player {
 
     private String username;
-    private String hostname;
     private Job selectedClass;
 
     /*Condition of character*/
     private int currentHP;
 
-    public User(){
+    public Player(){
         username = null;
-        hostname = null;
         selectedClass = null;
     }
 
@@ -21,9 +19,6 @@ public class User {
         return username;
     }
 
-    public String getHostname(){
-        return hostname;
-    }
 
     public Job getSelectedClass(){
         return selectedClass;
@@ -35,10 +30,6 @@ public class User {
 
     public void setUsername(String username){
         this.username = username;
-    }
-
-    public void setHostname(String hostname){
-        this.hostname = hostname;
     }
 
     public void setSelectedClass(String classString){

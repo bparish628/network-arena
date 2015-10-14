@@ -1,32 +1,29 @@
 package ui.login;
 
+import common.Player;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import ui.ApplicationController;
-import ui.login.User;
-
-import java.awt.*;
 
 public class LoginController {
     /*User*/
-    private User user;
+    private Player user;
 
     /*Stats*/
-    private Label selectedDisplay = new Label();
-    private Label hpDisplay = new Label();
-    private Label action1Display = new Label();
-    private Label action2Display = new Label();
-    private Label action3Display = new Label();
+    private Label selectedDisplay;
+    private Label hpDisplay;
+    private Label attackDisplay;
+    private Label defenseDisplay;
+    private Label action1Display;
+    private Label action2Display;
+    private Label action3Display;
     private ImageView imageDisplay;
 
 
@@ -41,9 +38,11 @@ public class LoginController {
     /*Constructor to set everything up*/
     public LoginController(){
         imageDisplay = new ImageView();
-        user = new User();
+        user = new Player();
         selectedDisplay = new Label();
         hpDisplay = new Label();
+        attackDisplay = new Label();
+        defenseDisplay = new Label();
         action1Display = new Label();
         action2Display = new Label();
         action3Display = new Label();
@@ -64,9 +63,8 @@ public class LoginController {
         connectButton.setPrefWidth(212);
 
         connectButton.setOnAction((ActionEvent e) -> {
-            if ((!getUsernameField().getText().isEmpty() && !getHostField().getText().isEmpty() && getClasses().getSelectedToggle() != null)) {
+            if ((!getUsernameField().getText().isEmpty() && getClasses().getSelectedToggle() != null)) {
                 user.setUsername(getUsernameField().getText());
-                user.setHostname(getHostField().getText());
                 new ApplicationController().goToStage(2);
             }
         });
@@ -87,6 +85,8 @@ public class LoginController {
                     imageDisplay.setImage(user.getSelectedClass().getImage());
                     selectedDisplay.setText(classes.getSelectedToggle().getUserData().toString());
                     hpDisplay.setText(Integer.toString(user.getSelectedClass().getHp()));
+                    attackDisplay.setText(Integer.toString(user.getSelectedClass().getAttack()));
+                    defenseDisplay.setText(Integer.toString(user.getSelectedClass().getDefense()));
                     action1Display.setText(user.getSelectedClass().getAction1());
                     action2Display.setText(user.getSelectedClass().getAction2());
                     action3Display.setText(user.getSelectedClass().getAction3());
@@ -117,6 +117,14 @@ public class LoginController {
         return new Label("HP:");
     }
 
+    public Label getAttackLabel(){
+        return new Label("Attack:");
+    }
+
+    public Label getDefenseLabel(){
+        return new Label("Defense:");
+    }
+
     public Label getActionLabel(){
         return new Label("Actions:");
     }
@@ -133,6 +141,14 @@ public class LoginController {
 
     public Label getHpDisplay(){
         return hpDisplay;
+    }
+
+    public Label getAttackDisplay(){
+        return attackDisplay;
+    }
+
+    public Label getDefenseDisplay(){
+        return defenseDisplay;
     }
 
     public Label getActionDisplay(int num){

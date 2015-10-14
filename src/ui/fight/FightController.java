@@ -1,27 +1,32 @@
 package ui.fight;
 
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import ui.login.User;
+import common.Player;
 
 public class FightController {
     /*User*/
-    private User user;
+    private Player user;
+
+    /*Opponent*/
+    private Player player2;
+    private Player player3;
+    private Player player4;
 
     /*Changeable content*/
-    ProgressBar hpBar;
+    ProgressBar userHpBar;
+    ProgressBar player2HpBar;
+    ProgressBar player3HpBar;
+    ProgressBar player4HpBar;
     VBox logBox;
     Label currentHPText;
     Text stat1;
@@ -30,18 +35,30 @@ public class FightController {
     Text stat4;
 
     public FightController(){
-        user = new User();
-        setUser();
+        /*Set up user*/
+        user = new Player();
+        setPlayer(user, "Benji", "Melee");
 
-        hpBar = new ProgressBar();
+        /*Set up other players*/
+        player2 = new Player();
+        player3 = new Player();
+        player4 = new Player();
+        setPlayer(player2, "Kale", "Magic");
+        setPlayer(player3, "John", "Range");
+        setPlayer(player4, "Jackson", "Melee");
+
+        userHpBar = new ProgressBar();
+        player2HpBar = new ProgressBar();
+        player3HpBar = new ProgressBar();
+        player4HpBar = new ProgressBar();
+
         logBox = new VBox();
         setupLabels();
     }
 
-    public void setUser(){
-        user.setUsername("Benji");
-        user.setSelectedClass("Magic");
-        user.setHostname("Hostname is Here");
+    public void setPlayer(Player player, String username, String job){
+        player.setUsername(username);
+        player.setSelectedClass(job);
     }
 
     private void setupLabels(){
@@ -85,16 +102,19 @@ public class FightController {
         view.setPrefWidth(200);
         view.setStyle("-fx-background-color: gainsboro");
 
+        /*Class Image*/
+        HBox imageBox = new HBox();
+        imageBox.setAlignment(Pos.CENTER);
+        imageBox.setPadding(new Insets(15,0,0,0));
         ImageView classImage = new ImageView();
-
         classImage.setImage(user.getSelectedClass().getImage());
-        classImage.setFitWidth(190);
+        imageBox.getChildren().add(classImage);
 
         Label hpLabel = new Label("HP");
         hpLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
-        hpBar.setPrefWidth(190);
-        updateHPBar();
+        userHpBar.setPrefWidth(190);
+        updateUserHPBar();
 
         Text StatsLabel = new Text("Stats:");
         StatsLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
@@ -102,29 +122,29 @@ public class FightController {
         /*Creating stat boxes*/
         HBox statLine1 = new HBox();
         statLine1.setPadding(new Insets(0, 0, 0, 15));
-        Label StatLabel1 = new Label("Stat1: ");
-        stat1.setText("stat1");
+        Label StatLabel1 = new Label("Username: ");
+        stat1.setText(user.getUsername());
         statLine1.getChildren().addAll(StatLabel1, stat1);
 
         HBox statLine2 = new HBox();
         statLine2.setPadding(new Insets(0,0,0,15));
-        Label StatLabel2 = new Label("Stat2: ");
-        stat2.setText("stat2");
+        Label StatLabel2 = new Label("Attack: ");
+        stat2.setText(Integer.toString(user.getSelectedClass().getAttack()));
         statLine2.getChildren().addAll(StatLabel2, stat2);
 
         HBox statLine3 = new HBox();
         statLine3.setPadding(new Insets(0,0,0,15));
-        Label StatLabel3 = new Label("Stat3: ");
-        stat3.setText("stat3");
+        Label StatLabel3 = new Label("Defense: ");
+        stat3.setText(Integer.toString(user.getSelectedClass().getDefense()));
         statLine3.getChildren().addAll(StatLabel3, stat3);
 
-        HBox statLine4 = new HBox();
-        statLine4.setPadding(new Insets(0,0,0,15));
-        Label StatLabel4 = new Label("Stat4: ");
-        stat4.setText("stat4");
-        statLine4.getChildren().addAll(StatLabel4, stat4);
+//        HBox statLine4 = new HBox();
+//        statLine4.setPadding(new Insets(0,0,0,15));
+//        Label StatLabel4 = new Label("Guard Enabled: ");
+//        stat4.setText("False");
+//        statLine4.getChildren().addAll(StatLabel4, stat4);
 
-        view.getChildren().addAll(classImage, hpLabel, hpBar, currentHPText, StatsLabel, statLine1, statLine2, statLine3, statLine4);
+        view.getChildren().addAll(hpLabel, userHpBar, currentHPText, StatsLabel, statLine1, statLine2, statLine3, imageBox);
 
 
         return view;
@@ -152,16 +172,47 @@ public class FightController {
         logBox.setPrefHeight(100);
         opponentsBox.setStyle("-fx-background-color: snow; -fx-border-color: lightgray");
 
-
-        opponentsBox.getChildren().addAll(generateOpponentBox(), generateOpponentBox(), generateOpponentBox());
+        opponentsBox.getChildren().addAll(generateOpponentBox(2, player2), generateOpponentBox(3, player3), generateOpponentBox(4, player4));
         return opponentsBox;
     }
 
-    private HBox generateOpponentBox(){
+    private HBox generateOpponentBox(int playerNum, Player player){
         HBox oppBox = new HBox();
-        oppBox.setPrefHeight(150);
-        oppBox.setStyle("-fx-background-color: snow; -fx-border-color: black");
+        oppBox.setPadding(new Insets(12, 12, 12, 12));
+        oppBox.setPrefHeight(85);
+        oppBox.setAlignment(Pos.CENTER_LEFT);
+        oppBox.setStyle("-fx-background-color: gainsboro; -fx-border-color: black");
 
+        /*Image*/
+        ImageView classImage = new ImageView();
+        classImage.setImage(player.getSelectedClass().getImage());
+
+        /*Username*/
+
+
+        /*Hp bar*/
+        VBox hpBox = new VBox();
+        hpBox.setAlignment(Pos.CENTER);
+        hpBox.setPadding(new Insets(0,0,0,65));
+        Text username = new Text(player.getUsername());
+        username.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+
+        switch(playerNum){
+            case 2:
+                updateProgressBar(player2HpBar, player);
+                hpBox.getChildren().addAll(username, player2HpBar);
+                break;
+            case 3:
+                updateProgressBar(player3HpBar, player);
+                hpBox.getChildren().addAll(username, player3HpBar);
+                break;
+            case 4:
+                updateProgressBar(player4HpBar, player);
+                hpBox.getChildren().addAll(username, player4HpBar);
+                break;
+        }
+
+        oppBox.getChildren().addAll(classImage, hpBox);
         return oppBox;
     }
 
@@ -173,14 +224,18 @@ public class FightController {
         logBox.getChildren().add(newLogItem);
     }
 
-    private void updateHPBar(){
+    private void updateUserHPBar(){
         currentHPText.setText(Integer.toString(user.getCurrentHP()) + "/" + Integer.toString(user.getSelectedClass().getHp()));
-        double hpPercent = (double)(user.getCurrentHP())/(double)(user.getSelectedClass().getHp());
-        hpBar.setProgress(hpPercent);
+        updateProgressBar(userHpBar, user);
+    }
+
+    private void updateProgressBar(ProgressBar bar, Player player){
+        double hpPercent = (double)(player.getCurrentHP())/(double)(player.getSelectedClass().getHp());
+        bar.setProgress(hpPercent);
         if(hpPercent > .3){
-            hpBar.setStyle("-fx-accent: green");
+            bar.setStyle("-fx-accent: green");
         }else{
-            hpBar.setStyle("-fx-accent: crimson");
+            bar.setStyle("-fx-accent: crimson");
         }
     }
 }
