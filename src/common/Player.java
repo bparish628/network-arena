@@ -9,10 +9,12 @@ public class Player {
 
     /*Condition of character*/
     private int currentHP;
+    private boolean guardStatus;
 
     public Player(){
         username = null;
         selectedClass = null;
+        guardStatus = false;
     }
 
     public String getUsername(){
@@ -39,5 +41,17 @@ public class Player {
 
     public void setCurrentHP(int hp){
         this.currentHP = hp;
+    }
+
+    public void setGuarding(boolean guard){
+         this.guardStatus = guard;
+    }
+
+    public boolean isAlive(){
+        return this.currentHP > 0;
+    }
+
+    public boolean isGuarding(){
+        return this.guardStatus;
     }
 }

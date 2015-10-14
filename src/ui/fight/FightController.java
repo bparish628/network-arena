@@ -18,9 +18,7 @@ public class FightController {
     private Player user;
 
     /*Opponent*/
-    private Player player2;
-    private Player player3;
-    private Player player4;
+    private Player players[];
 
     /*Changeable content*/
     ProgressBar userHpBar;
@@ -40,12 +38,11 @@ public class FightController {
         setPlayer(user, "Benji", "Melee");
 
         /*Set up other players*/
-        player2 = new Player();
-        player3 = new Player();
-        player4 = new Player();
-        setPlayer(player2, "Kale", "Magic");
-        setPlayer(player3, "John", "Range");
-        setPlayer(player4, "Jackson", "Melee");
+        players = new Player[3];
+
+        setPlayer(players[0], "Kale", "Magic");
+        setPlayer(players[1], "John", "Range");
+        setPlayer(players[2], "Jackson", "Melee");
 
         userHpBar = new ProgressBar();
         player2HpBar = new ProgressBar();
@@ -172,7 +169,7 @@ public class FightController {
         logBox.setPrefHeight(100);
         opponentsBox.setStyle("-fx-background-color: snow; -fx-border-color: lightgray");
 
-        opponentsBox.getChildren().addAll(generateOpponentBox(2, player2), generateOpponentBox(3, player3), generateOpponentBox(4, player4));
+        opponentsBox.getChildren().addAll(generateOpponentBox(2, players[0]), generateOpponentBox(3, players[1]), generateOpponentBox(4, players[2]));
         return opponentsBox;
     }
 
