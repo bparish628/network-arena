@@ -143,10 +143,8 @@ public class FightController extends Controller{
         logBox.setSpacing(10);
         logBox.setPrefHeight(100);
         logBox.setStyle("-fx-background-color: snow; -fx-border-color: lightgray");
-
-        for(int i = 1; i < 10; i++){
-            updateLog("Testing the log. This is test #" + i);
-        }
+        updateLog("Welcome to the Network Arena");
+        updateLog("Where you come to get connected!");
 
         return logBox;
     }
@@ -202,7 +200,7 @@ public class FightController extends Controller{
         return oppBox;
     }
 
-    private void updateLog(String text){
+    public void updateLog(String text){
         Text newLogItem = new Text(text);
         if(logBox.getChildren().size() > 4){
             logBox.getChildren().remove(0,1);

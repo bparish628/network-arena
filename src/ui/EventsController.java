@@ -20,19 +20,19 @@ public class EventsController extends Controller{
 
     public static void attackButton(FightController ctrl, Button buttonNode){
         buttonNode.setOnAction((ActionEvent e) -> {
-            System.out.println("Attack Triggered!");
+            ctrl.updateLog("Attack Triggered!");
         });
     }
 
     public static void defendButton(FightController ctrl, Button buttonNode){
         buttonNode.setOnAction((ActionEvent e) -> {
-            System.out.println("Defend Triggered!");
+            ctrl.updateLog("Defend Triggered!");
         });
     }
 
     public static void specialButton(FightController ctrl, Button buttonNode){
         buttonNode.setOnAction((ActionEvent e) -> {
-            System.out.println("Special Triggered!");
+            ctrl.updateLog("Special Triggered!");
         });
     }
 }
