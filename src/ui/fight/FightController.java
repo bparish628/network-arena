@@ -1,5 +1,6 @@
 package ui.fight;
 
+import common.Controller;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,8 +13,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import common.Player;
+import ui.EventsController;
 
-public class FightController {
+public class FightController extends Controller{
     /*User*/
     private Player user;
 
@@ -30,22 +32,14 @@ public class FightController {
     Text stat1;
     Text stat2;
     Text stat3;
-    Text stat4;
+    Text target;
 
     public FightController(){
-        /*Set up user*/
-        user = new Player();
-        setPlayer(user, "Benji", "Melee");
+        /*get user*/
+        user = getUser();
 
-        /*Set up other players*/
-        players = new Player[3];
-        for(int i = 0; i < players.length; i++){
-            players[i] = new Player();
-        }
-
-        setPlayer(players[0], "Kale", "Magic");
-        setPlayer(players[1], "John", "Range");
-        setPlayer(players[2], "Jackson", "Melee");
+        /*get other players*/
+        players = getPlayers();
 
         userHpBar = new ProgressBar();
         player2HpBar = new ProgressBar();
@@ -56,11 +50,6 @@ public class FightController {
         setupLabels();
     }
 
-    public void setPlayer(Player player, String username, String job){
-        player.setUsername(username);
-        player.setSelectedClass(job);
-    }
-
     private void setupLabels(){
         currentHPText = new Label();
         currentHPText.setPrefWidth(190);
@@ -69,7 +58,7 @@ public class FightController {
         stat1 = new Text();
         stat2 = new Text();
         stat3 = new Text();
-        stat4 = new Text();
+        target = new Text();
     }
     public HBox getActionMenu() {
         /*Set up the container*/
@@ -82,15 +71,19 @@ public class FightController {
         /*Setup action buttons*/
         Label actionsLabel = new Label("Actions: ");
 
-        Button action1Button = new Button(user.getSelectedClass().getAction1());
-        Button action2Button = new Button(user.getSelectedClass().getAction2());
-        Button action3Button = new Button(user.getSelectedClass().getAction3());
+        Button attackButton = new Button(user.getSelectedClass().getAction1());
+        Button defendButton = new Button(user.getSelectedClass().getAction2());
+        Button specialButton = new Button(user.getSelectedClass().getAction3());
 
-        action1Button.setPrefSize(100, 20);
-        action2Button.setPrefSize(100, 20);
-        action3Button.setPrefSize(100, 20);
+        attackButton.setPrefSize(100, 20);
+        defendButton.setPrefSize(100, 20);
+        specialButton.setPrefSize(100, 20);
 
-        actionMenu.getChildren().addAll(actionsLabel, action1Button, action2Button, action3Button);
+        EventsController.attackButton(this, attackButton);
+        EventsController.defendButton(this, defendButton);
+        EventsController.specialButton(this, specialButton);
+
+        actionMenu.getChildren().addAll(actionsLabel, attackButton, defendButton, specialButton);
 
         return actionMenu;
     }
@@ -105,7 +98,7 @@ public class FightController {
         /*Class Image*/
         HBox imageBox = new HBox();
         imageBox.setAlignment(Pos.CENTER);
-        imageBox.setPadding(new Insets(15,0,0,0));
+        imageBox.setPadding(new Insets(15, 0, 0, 0));
         ImageView classImage = new ImageView();
         classImage.setImage(user.getSelectedClass().getImage());
         imageBox.getChildren().add(classImage);
@@ -127,22 +120,16 @@ public class FightController {
         statLine1.getChildren().addAll(StatLabel1, stat1);
 
         HBox statLine2 = new HBox();
-        statLine2.setPadding(new Insets(0,0,0,15));
+        statLine2.setPadding(new Insets(0, 0, 0, 15));
         Label StatLabel2 = new Label("Attack: ");
         stat2.setText(Integer.toString(user.getSelectedClass().getAttack()));
         statLine2.getChildren().addAll(StatLabel2, stat2);
 
         HBox statLine3 = new HBox();
-        statLine3.setPadding(new Insets(0,0,0,15));
+        statLine3.setPadding(new Insets(0, 0, 0, 15));
         Label StatLabel3 = new Label("Defense: ");
         stat3.setText(Integer.toString(user.getSelectedClass().getDefense()));
         statLine3.getChildren().addAll(StatLabel3, stat3);
-
-//        HBox statLine4 = new HBox();
-//        statLine4.setPadding(new Insets(0,0,0,15));
-//        Label StatLabel4 = new Label("Guard Enabled: ");
-//        stat4.setText("False");
-//        statLine4.getChildren().addAll(StatLabel4, stat4);
 
         view.getChildren().addAll(hpLabel, userHpBar, currentHPText, StatsLabel, statLine1, statLine2, statLine3, imageBox);
 
@@ -187,9 +174,6 @@ public class FightController {
         ImageView classImage = new ImageView();
         classImage.setImage(player.getSelectedClass().getImage());
 
-        /*Username*/
-
-
         /*Hp bar*/
         VBox hpBox = new VBox();
         hpBox.setAlignment(Pos.CENTER);
@@ -211,6 +195,8 @@ public class FightController {
                 hpBox.getChildren().addAll(username, player4HpBar);
                 break;
         }
+
+//        oppBox.addEventHandler();
 
         oppBox.getChildren().addAll(classImage, hpBox);
         return oppBox;

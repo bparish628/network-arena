@@ -11,7 +11,7 @@ import javafx.stage.WindowEvent;
 import ui.fight.FightView;
 import ui.login.LoginView;
 
-public class ApplicationController extends Application{
+public class App extends Application {
 
     public static Stage appStage;
 
@@ -29,7 +29,7 @@ public class ApplicationController extends Application{
         goToStage(1);
     }
 
-    public void goToStage(int num){
+    public static void goToStage(int num){
         appStage.close();
         switch(num){
             case 1:

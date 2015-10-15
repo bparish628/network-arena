@@ -10,6 +10,7 @@ public class Player {
     /*Condition of character*/
     private int currentHP;
     private boolean guardStatus;
+    private Player target;
 
     public Player(){
         username = null;
@@ -53,5 +54,16 @@ public class Player {
 
     public boolean isGuarding(){
         return this.guardStatus;
+    }
+
+    public Player getTarget(){
+        if(target == null){
+            target = new Player();
+        }
+        return target;
+    }
+
+    public void setTarget(Player target){
+        this.target = target;
     }
 }

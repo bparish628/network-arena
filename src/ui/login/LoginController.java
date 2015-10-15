@@ -1,18 +1,18 @@
 package ui.login;
 
+import common.Controller;
 import common.Player;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
-import ui.ApplicationController;
+import ui.EventsController;
 
-public class LoginController {
+public class LoginController extends Controller {
     /*User*/
     private Player user;
 
@@ -38,7 +38,7 @@ public class LoginController {
     /*Constructor to set everything up*/
     public LoginController(){
         imageDisplay = new ImageView();
-        user = new Player();
+        user = getUser();
         selectedDisplay = new Label();
         hpDisplay = new Label();
         attackDisplay = new Label();
@@ -61,13 +61,8 @@ public class LoginController {
     private void setConnectButton(){
         connectButton = new Button("Connect");
         connectButton.setPrefWidth(212);
+        EventsController.connectButton(this, connectButton);
 
-        connectButton.setOnAction((ActionEvent e) -> {
-            if ((!getUsernameField().getText().isEmpty() && getClasses().getSelectedToggle() != null)) {
-                user.setUsername(getUsernameField().getText());
-                new ApplicationController().goToStage(2);
-            }
-        });
     }
 
     private void setHostField(){
