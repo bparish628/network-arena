@@ -71,9 +71,9 @@ public class FightController extends Controller{
         /*Setup action buttons*/
         Label actionsLabel = new Label("Actions: ");
 
-        Button attackButton = new Button(user.getSelectedClass().getAction1());
-        Button defendButton = new Button(user.getSelectedClass().getAction2());
-        Button specialButton = new Button(user.getSelectedClass().getAction3());
+        Button attackButton = new Button(user.getSelectedClass().getBasicAction().getName());
+        Button defendButton = new Button(user.getSelectedClass().getDefendAction().getName());
+        Button specialButton = new Button(user.getSelectedClass().getSpecialAction().getName());
 
         attackButton.setPrefSize(100, 20);
         defendButton.setPrefSize(100, 20);
@@ -157,7 +157,8 @@ public class FightController extends Controller{
         logBox.setPrefHeight(100);
         opponentsBox.setStyle("-fx-background-color: snow; -fx-border-color: lightgray");
 
-        opponentsBox.getChildren().addAll(generateOpponentBox(2, players[0]), generateOpponentBox(3, players[1]), generateOpponentBox(4, players[2]));
+        opponentsBox.getChildren().addAll(generateOpponentBox(0, players[0]), generateOpponentBox(1, players[1]), generateOpponentBox(2, players[2]));
+        EventsController.targetSelector(this, opponentsBox);
         return opponentsBox;
     }
 
@@ -166,7 +167,7 @@ public class FightController extends Controller{
         oppBox.setPadding(new Insets(12, 12, 12, 12));
         oppBox.setPrefHeight(85);
         oppBox.setAlignment(Pos.CENTER_LEFT);
-        oppBox.setStyle("-fx-background-color: gainsboro; -fx-border-color: black");
+        oppBox.setStyle("-fx-background-color: gainsboro; -fx-border-color: black;");
 
         /*Image*/
         ImageView classImage = new ImageView();
@@ -180,15 +181,15 @@ public class FightController extends Controller{
         username.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 
         switch(playerNum){
-            case 2:
+            case 0:
                 updateProgressBar(player2HpBar, player);
                 hpBox.getChildren().addAll(username, player2HpBar);
                 break;
-            case 3:
+            case 1:
                 updateProgressBar(player3HpBar, player);
                 hpBox.getChildren().addAll(username, player3HpBar);
                 break;
-            case 4:
+            case 2:
                 updateProgressBar(player4HpBar, player);
                 hpBox.getChildren().addAll(username, player4HpBar);
                 break;

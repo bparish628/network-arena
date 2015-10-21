@@ -10,6 +10,7 @@ public class Player {
     /*Condition of character*/
     private int currentHP;
     private boolean guardStatus;
+    private Action queuedAction;
     private Player target;
 
     public Player(){
@@ -66,4 +67,8 @@ public class Player {
     public void setTarget(Player target){
         this.target = target;
     }
+
+    public void setQueuedAction(Action action){ this.queuedAction = action;}
+
+    public Action getQueuedAction(){ return queuedAction;}
 }

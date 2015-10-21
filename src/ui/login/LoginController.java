@@ -82,9 +82,9 @@ public class LoginController extends Controller {
                     hpDisplay.setText(Integer.toString(user.getSelectedClass().getHp()));
                     attackDisplay.setText(Integer.toString(user.getSelectedClass().getAttack()));
                     defenseDisplay.setText(Integer.toString(user.getSelectedClass().getDefense()));
-                    action1Display.setText(user.getSelectedClass().getAction1());
-                    action2Display.setText(user.getSelectedClass().getAction2());
-                    action3Display.setText(user.getSelectedClass().getAction3());
+                    action1Display.setText(user.getSelectedClass().getBasicAction().getName());
+                    action2Display.setText(user.getSelectedClass().getDefendAction().getName());
+                    action3Display.setText(user.getSelectedClass().getSpecialAction().getName());
 
                 }
             }
