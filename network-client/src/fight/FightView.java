@@ -1,8 +1,7 @@
-package ui.fight;
+package fight;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 
 public class FightView {
     BorderPane container = new BorderPane();

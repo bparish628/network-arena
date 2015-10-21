@@ -1,15 +1,9 @@
-package ui;
+package run;
 
+import fight.FightView;
+import login.LoginView;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import ui.fight.FightView;
-import ui.login.LoginView;
 
 public class App extends Application {
 

@@ -1,15 +1,15 @@
-package ui;
+package events;
 
 import common.Controller;
+import fight.FightController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import ui.fight.FightController;
-import ui.login.LoginController;
+import login.LoginController;
+import run.App;
 
 public class EventsController extends Controller{
 

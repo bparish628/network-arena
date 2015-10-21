@@ -32,7 +32,7 @@ public class Job {
         this.basic = basic;
         this.defend = defend;
         this.special = special;
-        this.image = new Image("/ui/images/"+ image + ".png", 50, 75, false, false);;
+        this.image = new Image("/images/" + image + ".png", 50, 75, false, false);;
     }
 
     private void setMelee(){
@@ -43,7 +43,7 @@ public class Job {
         this.basic = new Action("Attack", "Basic");
         this.defend = new Action("Defend", "Defend");
         this.special = new Action("Whirlwind", "Special");
-        this.image = new Image("/ui/images/melee.png", 50, 75, false, false);
+        this.image = new Image("/images/melee.png", 50, 75, false, false);
     }
 
     private void setMagic(){
@@ -54,7 +54,7 @@ public class Job {
         this.basic = new Action("Attack", "Basic");
         this.defend = new Action("Guard", "Defend");
         this.special = new Action("Firestorm", "Special");
-        this.image = new Image("/ui/images/magic.png", 50, 75, false, false);
+        this.image = new Image("/images/magic.png", 50, 75, false, false);
     }
 
     private void setRange(){
@@ -65,7 +65,7 @@ public class Job {
         this.basic = new Action("Attack", "Basic");
         this.defend = new Action("Hide", "Defend");
         this.special = new Action("Multishot", "Special");
-        this.image = new Image("/ui/images/range.png", 50, 75, false, false);
+        this.image = new Image("/images/range.png", 50, 75, false, false);
     }
 
     public int getHp(){

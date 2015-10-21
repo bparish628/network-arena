@@ -1,7 +1,5 @@
 package common;
 
-import common.Job;
-
 public class Player {
 
     private String username;
