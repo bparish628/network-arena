@@ -1,9 +1,11 @@
-import java.io.BufferedReader;
+package Networking;
+
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.*;
+import java.util.Timer;
 
 /**
  * This class is designed to make interacting with the four sockets easier.
@@ -19,8 +21,8 @@ public class ConnectionsManager {
 	private final String hostName = "localhost"; //Not currently used because InetAddress.getByName(null) is better
 	//private arrays
 	private Socket[] plyrCons; //the actual socket connections
-	private BufferedReader[] pConReads; //for reading from a specified socket
-	private PrintWriter[] pConOuts; //for sending information to a specified socket
+	private ObjectInputStream[] pConReads; //for reading from a specified socket
+	private ObjectOutputStream[] pConOuts; //for sending information to a specified socket
 	//private fields
 	private byte numConnections; //The number of current player connections
 	private boolean readyForPlay; //Should be true if numConnections > 4
@@ -32,8 +34,8 @@ public class ConnectionsManager {
 	public ConnectionsManager() {
 		//init all player connections, plus one for default ([0])
 		plyrCons = new Socket[MAX_CONNS+1];
-		pConReads = new BufferedReader[MAX_CONNS+1];
-		pConOuts = new PrintWriter[MAX_CONNS+1];
+		pConReads = new ObjectInputStream[MAX_CONNS+1];
+		pConOuts = new ObjectOutputStream[MAX_CONNS+1];
 		numConnections = 0;
 		readyForPlay = false;
 	}
@@ -49,26 +51,26 @@ public class ConnectionsManager {
 		numConnections = 0;
 		//try to connect the sockets.
 		plyrCons = new Socket[MAX_CONNS+1];
-		pConReads = new BufferedReader[MAX_CONNS+1];
-		pConOuts = new PrintWriter[MAX_CONNS+1];
+		pConReads = new ObjectInputStream[MAX_CONNS+1];
+		pConOuts = new ObjectOutputStream[MAX_CONNS+1];
 		ServerSocket ss;
 		for(int i = 0; i < (portNums.length < 4 ? portNums.length : 4); i++) {
 			try {
 				System.out.printf("Waiting for connection #%d on port %d\n",i+1,DEFAULT_PORT);
 				ss = new ServerSocket(DEFAULT_PORT);
 				plyrCons[0] = ss.accept();
-				pConOuts[0] = new PrintWriter(plyrCons[0].getOutputStream(), true);
-				pConReads[0] = new BufferedReader(new InputStreamReader(plyrCons[0].getInputStream()));
+				pConOuts[0] = new ObjectOutputStream(plyrCons[0].getOutputStream());
+				pConReads[0] = new ObjectInputStream(plyrCons[0].getInputStream());
 				ss.close();
-				String tmpResp = pConReads[0].readLine();
-				pConOuts[0].println(portNums[i]);
+				String tmpResp = (String)pConReads[0].readObject();
+				pConOuts[0].writeInt(portNums[i]);
 				closeDefaults();
 				if(tmpResp.equals("ACK")) {
 					ss = new ServerSocket(portNums[i]);
 					plyrCons[i+1] = ss.accept();
-					pConReads[i+1] = new BufferedReader(new InputStreamReader(plyrCons[i+1].getInputStream()));
-					pConOuts[i+1] = new PrintWriter(plyrCons[i+1].getOutputStream(),true);
-					tmpResp = pConReads[i+1].readLine();
+					pConReads[i+1] = new ObjectInputStream(plyrCons[i+1].getInputStream());
+					pConOuts[i+1] = new ObjectOutputStream(plyrCons[i+1].getOutputStream());
+					tmpResp = (String)pConReads[i+1].readObject();
 					numConnections++;
 					System.out.printf("Socket #%d successfully connected!\nMessage: %s\n",i+1,tmpResp);
 				} else {
@@ -86,7 +88,7 @@ public class ConnectionsManager {
 		}
 		//after that, check if they all connected.
 		if(numConnections < 4) {
-			System.out.println("server.ConnectionsManager is still waiting for more connections.");
+			System.out.println("ConnectionsManager is still waiting for more connections.");
 		} else {
 			readyForPlay = true;
 		}
@@ -128,18 +130,18 @@ public class ConnectionsManager {
 				ServerSocket ss = new ServerSocket(DEFAULT_PORT);
 				System.out.printf("Waiting for connection #%d on port %d\n",numConnections+1,DEFAULT_PORT);
 				plyrCons[0] = ss.accept();
-				pConReads[0] = new BufferedReader(new InputStreamReader(plyrCons[0].getInputStream()));
-				pConOuts[0] = new PrintWriter(plyrCons[0].getOutputStream(),true);
-				String rsp = pConReads[0].readLine();
-				pConOuts[0].println(port);
+				pConReads[0] = new ObjectInputStream(plyrCons[0].getInputStream());
+				pConOuts[0] = new ObjectOutputStream(plyrCons[0].getOutputStream());
+				String rsp = (String)pConReads[0].readObject();
+				pConOuts[0].writeInt(port);
 				closeDefaults();
 				ss.close();
 				ss = new ServerSocket(port);
 				plyrCons[numConnections+1] = ss.accept();
 				ss.close();
-				pConReads[numConnections+1] = new BufferedReader(new InputStreamReader(plyrCons[numConnections+1].getInputStream()));
-				pConOuts[numConnections+1] = new PrintWriter(plyrCons[numConnections+1].getOutputStream(),true);
-				rsp = pConReads[numConnections+1].readLine();
+				pConReads[numConnections+1] = new ObjectInputStream(plyrCons[numConnections+1].getInputStream());
+				pConOuts[numConnections+1] = new ObjectOutputStream(plyrCons[numConnections+1].getOutputStream());
+				rsp = (String)pConReads[numConnections+1].readObject();
 				System.out.printf("Socket #%d successfully connected!\nMessage: %s\n",++numConnections,rsp);
 				if(numConnections == 4) {
 					readyForPlay = true;
@@ -154,7 +156,7 @@ public class ConnectionsManager {
 			}
 		} else {
 			throw new Exception(String.format("%s %s  %s %d\n",
-				"server.ConnectionsManager.addConnection:",
+				"ConnectionsManager.addConnection:",
 				"Attempted to add more connections than allowed.",
 				"Max connections:",
 				MAX_CONNS
@@ -186,7 +188,7 @@ public class ConnectionsManager {
 					numConnections--;
 					
 					//The following is commented out because it might actually be a bad idea.
-					//server.Player numbers are most likely going to be associated with an index of plyrCons, so moving them around
+					//Player numbers are most likely going to be associated with an index of plyrCons, so moving them around
 					//might be unnecessary and annoying to deal with.
 
 /*					shift connections left if needed
@@ -207,12 +209,12 @@ public class ConnectionsManager {
 					readyForPlay = false;
 					return true;
 				} catch(Exception why) {
-					System.out.println("server.ConnectionsManager.removeConnection: " + why.getMessage());
+					System.out.println("ConnectionsManager.removeConnection: " + why.getMessage());
 					return false;
 				}
 			}
 		} else {
-			throw new ArrayIndexOutOfBoundsException("server.ConnectionsManager.removeConnection: index " + index + " is invalid.");
+			throw new ArrayIndexOutOfBoundsException("ConnectionsManager.removeConnection: index " + index + " is invalid.");
 		}
 	}
 	/**
@@ -234,7 +236,7 @@ public class ConnectionsManager {
 					numConnections--;
 					
 					//The following is commented out because it might actually be a bad idea.
-					//server.Player numbers are most likely going to be associated with an index of plyrCons, so moving them around
+					//Player numbers are most likely going to be associated with an index of plyrCons, so moving them around
 					//might be unnecessary and annoying to deal with.
 
 /*					shift connections left if needed
@@ -255,7 +257,7 @@ public class ConnectionsManager {
 					readyForPlay = false;
 					return true;
 				} catch(Exception why) {
-					System.out.println("server.ConnectionsManager.removeConnection: " + why.getMessage());
+					System.out.println("ConnectionsManager.removeConnection: " + why.getMessage());
 					return false;
 				}
 			}
@@ -271,12 +273,12 @@ public class ConnectionsManager {
 	public void sendMessage(String message, int index) throws Exception {
 		if(index < numConnections+1 && index >= 0) {
 			if(plyrCons[index] != null) {
-				pConOuts[index].println(message);
+				pConOuts[index].writeObject(message);
 			} else {
-				throw new Exception("server.ConnectionsManager.sendMessage: Connection at index " + index + " is not writable.");
+				throw new Exception("ConnectionsManager.sendMessage: Connection at index " + index + " is not writable.");
 			}
 		} else {
-			throw new Exception("server.ConnectionsManager.sendMessage: index " + index + " is invalid.");
+			throw new Exception("ConnectionsManager.sendMessage: index " + index + " is invalid.");
 		}
 	}
 	/**
@@ -286,13 +288,29 @@ public class ConnectionsManager {
 	public void broadcast(String message) {
 		for(int i = 1; i<pConOuts.length; i++) {
 			if(pConOuts[i] != null) {
-				pConOuts[i].println(message);
+				try {
+					pConOuts[i].writeObject(message);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	public void broadcastPlayer(Player plyr) {
+		for(int i = 1; i<pConOuts.length; i++) {
+			if(pConOuts[i] != null) {
+				try {
+					pConOuts[i].writeObject(plyr);
+				} catch(Exception e) {
+					System.out.println(e);
+				}
 			}
 		}
 	}
 	
 	public void closeAll() {
-		for(PrintWriter pw : pConOuts) {
+		for(ObjectOutputStream pw : pConOuts) {
 			if(pw != null) {
 				try {
 					pw.close();
@@ -301,7 +319,7 @@ public class ConnectionsManager {
 				}
 			}
 		}
-		for(BufferedReader br : pConReads) {
+		for(ObjectInputStream br : pConReads) {
 			if(br != null) {
 				try {
 					br.close();
@@ -338,7 +356,7 @@ public class ConnectionsManager {
 	
 	//private methods
 	/**
-	 * Closes the default Socket, BufferedReader, and PrintWriter if they are not null.
+	 * Closes the default Socket, ObjectInputStream, and ObjectOutputStream if they are not null.
 	 */
 	private void closeDefaults() {
 		try {
