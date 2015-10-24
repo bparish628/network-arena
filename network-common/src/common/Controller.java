@@ -1,9 +1,12 @@
 package common;
 
+import sockets.SocketConnector;
+
 public class Controller {
 
     private static Player user;
     private static Player players[];
+    private static SocketConnector clientSocket;
 
     public static Player getUser(){
         if(user == null){
@@ -22,5 +25,9 @@ public class Controller {
             }
         }
         return players;
+    }
+
+    public static void initSocket(){
+        clientSocket = new SocketConnector();
     }
 }

@@ -2,12 +2,14 @@ package common;
 
 import javafx.scene.image.Image;
 
-public class Job {
+import java.io.Serializable;
+
+public class Job implements Serializable{
     private int hp;
     private int attack;
     private int defense;
     private String job;
-    private Image image;
+    private transient Image image;
     private Action basic;
     private Action defend;
     private Action special;

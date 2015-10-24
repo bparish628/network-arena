@@ -1,3 +1,5 @@
+import common.Player;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -15,7 +17,7 @@ public class TestClient {
 	private static PrintWriter sendOut;
 	private static BufferedReader readIn;
 	private static Player plyr;
-	
+
 	public static void main(String[] args) {
 		//make the initial connection and get new port num from server
 		try {
@@ -52,7 +54,7 @@ public class TestClient {
 			System.out.println("Exiting.");
 			System.exit(0);
 		}
-		
+
 		Scanner in = new Scanner(System.in);
 		String s;
 		try {
@@ -62,7 +64,7 @@ public class TestClient {
 			System.out.println("YOU ARE PLAYER #" + rawResp);
 			System.out.print("Enter username: ");
 			s = in.nextLine();
-			plyr = new Player(s, Integer.parseInt(rawResp));
+			plyr = new Player();
 			sendOut.println(s);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -80,7 +82,7 @@ public class TestClient {
 		while(!in.next().equals("k")) {
 			System.out.println("k to disconnect");
 		}
-		
+
 		try {
 			in.close();
 			sendOut.close();

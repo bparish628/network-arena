@@ -1,3 +1,5 @@
+import common.Player;
+
 /**
  * The main class for the server application.
  */
@@ -12,7 +14,6 @@ public class Server {
 	public static void main(String[] args) {
 		plyrs = new Player[MAX_PLAYERS];
 		ConnectionsManager cnnMgr = new ConnectionsManager();
-		String response;
 		try {
 			for(int i = 0; i < MAX_PLAYERS; i++) {
 				try {
@@ -22,7 +23,6 @@ public class Server {
 					System.out.println("CONNECTION #" + i + " FAILED, RETRYING");
 					continue;
 				}
-				System.out.println(res);
 				cnnMgr.sendMessage(String.format("%d", i+1), i+1);
 				System.out.printf("PLAYER SUCCESSFULLY ADDED!\n%s", plyrs[i]);
 			}

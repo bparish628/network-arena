@@ -1,5 +1,3 @@
-package Networking;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -126,7 +124,7 @@ public class ConnectionsManager {
 	 * @throws Exception Thrown if the number of connections is already at maximum or if the connection fails.
 	 * @return The response from the client when connection to port is established.
 	 */
-	public String addConnection(int port) throws Exception {
+	public Player addConnection(int port) throws Exception {
 		if(numConnections < MAX_CONNS) {
 			try {
 				ServerSocket ss = new ServerSocket(DEFAULT_PORT);

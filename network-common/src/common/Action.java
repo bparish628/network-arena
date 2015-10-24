@@ -1,6 +1,8 @@
 package common;
 
-public class Action {
+import java.io.Serializable;
+
+public class Action implements Serializable{
     private String name;
     private String type;
 

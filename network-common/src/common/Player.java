@@ -1,6 +1,14 @@
 package common;
 
-public class Player {
+import sun.tools.java.ClassNotFound;
+
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.io.IOException;
+
+
+public class Player implements Serializable{
 
     private String username;
     private Job selectedClass;
@@ -69,4 +77,22 @@ public class Player {
     public void setQueuedAction(Action action){ this.queuedAction = action;}
 
     public Action getQueuedAction(){ return queuedAction;}
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        username = (String) in.readObject();
+        selectedClass = (Job) in.readObject();
+        currentHP = in.readInt();
+        guardStatus = in.readBoolean();
+        queuedAction = (Action) in.readObject();
+        target = (Player) in.readObject();
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.writeObject(username);
+        out.writeObject(selectedClass);
+        out.writeInt(currentHP);
+        out.writeBoolean(guardStatus);
+        out.writeObject(queuedAction);
+        out.writeObject(target);
+    }
 }
