@@ -51,9 +51,9 @@ public class ConnectionsManager {
 		numConnections = 0;
 		//try to connect the sockets.
 		plyrCons = new Socket[MAX_CONNS+1];
-		pConReads = new ObjectInputStream[MAX_CONNS+1];
 		pConOuts = new ObjectOutputStream[MAX_CONNS+1];
 		ServerSocket ss;
+		pConReads = new ObjectInputStream[MAX_CONNS+1];
 		for(int i = 0; i < (portNums.length < 4 ? portNums.length : 4); i++) {
 			try {
 				System.out.printf("Waiting for connection #%d on port %d\n",i+1,DEFAULT_PORT);
@@ -277,7 +277,7 @@ public class ConnectionsManager {
 	 * @param index The index of the connection to write to.
 	 * @throws Exception Thrown if the socket is not open for writing or if the index is invalid.
 	 */
-	public void sendMessage(String message, int index) throws Exception {
+	public void sendMessage(Object message, int index) throws Exception {
 		if(index < numConnections+1 && index >= 0) {
 			if(plyrCons[index] != null) {
 				pConOuts[index].writeObject(message);
@@ -292,7 +292,7 @@ public class ConnectionsManager {
 	 * Sends the message to all open connections.
 	 * @param message The message to be sent.
 	 */
-	public void broadcast(String message) {
+	public void broadcast(Object message) {
 		for(int i = 1; i<pConOuts.length; i++) {
 			if(pConOuts[i] != null) {
 				try {
@@ -304,7 +304,7 @@ public class ConnectionsManager {
 			}
 		}
 	}
-	public void broadcastPlayer(Player plyr) {
+/*	public void broadcastPlayer(Player plyr) {
 		for(int i = 1; i<pConOuts.length; i++) {
 			if(pConOuts[i] != null) {
 				try {
@@ -314,7 +314,7 @@ public class ConnectionsManager {
 				}
 			}
 		}
-	}
+	}*/
 	
 	public void closeAll() {
 		for(ObjectOutputStream pw : pConOuts) {
@@ -350,8 +350,8 @@ public class ConnectionsManager {
 	 * @param index The index of the connection to listen to.
 	 * @return The received response from the specified connection.
 	 */
-	public String waitForResponse(int index) {
-		String response;
+	public Object waitForResponse(int index) {
+		Object response;
 		try {		
 			response = pConReads[index].readLine();
 		} catch(Exception e) {

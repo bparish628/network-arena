@@ -1,4 +1,4 @@
-import common.Player;
+import common.*;
 
 /**
  * The main class for the server application.
@@ -23,7 +23,6 @@ public class Server {
 					System.out.println("CONNECTION #" + i + " FAILED, RETRYING");
 					continue;
 				}
-				cnnMgr.sendMessage(String.format("%d", i+1), i+1);
 				System.out.printf("PLAYER SUCCESSFULLY ADDED!\n%s", plyrs[i]);
 			}
 		} catch(Exception e) {

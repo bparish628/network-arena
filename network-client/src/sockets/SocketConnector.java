@@ -32,6 +32,26 @@ public class SocketConnector extends Controller{
         }
 
         initConnection();
+        Object serverMsg = null;
+        try {
+            while (serverMsg == null) {
+                serverMsg = readIn.readObject();
+                wait(10);
+            }
+            if (serverMsg instanceof String) {
+                System.out.println((String) serverMsg);
+            } else {
+                System.out.println("OH NOES THAT DOESN'T WORK");
+                System.out.println(serverMsg);
+            }
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void waitForServer(Object reference) {
+
     }
 
     public void initConnection(){
