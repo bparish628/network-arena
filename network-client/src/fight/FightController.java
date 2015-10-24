@@ -38,6 +38,8 @@ public class FightController extends Controller{
     Button specialButton;
 
     public FightController(){
+        super();
+
         /*get user*/
         user = getUser();
 
@@ -51,6 +53,8 @@ public class FightController extends Controller{
 
         logBox = new VBox();
         setupLabels();
+        String res = clientSocket.waitForServer();
+        System.out.println("I got a " + res + "from server");
     }
 
     private void setupLabels(){

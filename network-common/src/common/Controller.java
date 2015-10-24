@@ -6,7 +6,7 @@ public class Controller {
 
     private static Player user;
     private static Player players[];
-    private static SocketConnector clientSocket;
+    protected static SocketConnector clientSocket;
 
     public static Player getUser(){
         if(user == null){

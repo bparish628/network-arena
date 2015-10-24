@@ -32,6 +32,9 @@ public class SocketConnector extends Controller{
         }
 
         initConnection();
+    }
+
+    public String waitForServer() {
         String serverMsg = null;
         WaitForServerThread wfst = new WaitForServerThread("w", readIn);
         wfst.start();
@@ -44,6 +47,7 @@ public class SocketConnector extends Controller{
         }
         serverMsg = (String)wfst.getMessage();
         System.out.print(serverMsg);
+        return serverMsg;
     }
 
     public void initConnection(){

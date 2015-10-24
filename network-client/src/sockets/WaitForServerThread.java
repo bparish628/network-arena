@@ -24,12 +24,13 @@ public class WaitForServerThread extends Thread implements Runnable {
     public void run() {
         msg = null;
         try {
+            msg = in.readObject();
             while (msg == null) {
+                Thread.currentThread().sleep(50);
                 msg = in.readObject();
-                Thread.sleep(50);
             }
             done = true;
-            throw new InterruptedException((String)msg);
+            notify();
         } catch(Exception e) {
             //System.out.println(e.getMessage());
             //e.printStackTrace();
