@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Random;
 
 public class Job implements Serializable{
     private int hp;
@@ -41,9 +42,11 @@ public class Job implements Serializable{
     }
 
     private void setMelee(){
-        this.hp = 400;
-        this.attack = 100;
-        this.defense = 60;
+        Random rnd = new Random();
+        rnd.setSeed(System.currentTimeMillis());
+        this.hp = rnd.nextInt(50) + 400;
+        this.attack = rnd.nextInt(20) + 100;
+        this.defense = rnd.nextInt(10) + 60;
         this.job = "Melee";
         this.basic = new Action("Attack", "Basic");
         this.defend = new Action("Defend", "Defend");
@@ -52,9 +55,11 @@ public class Job implements Serializable{
     }
 
     private void setMagic(){
-        this.hp = 300;
-        this.attack = 140;
-        this.defense = 50;
+        Random rnd = new Random();
+        rnd.setSeed(System.currentTimeMillis());
+        this.hp = rnd.nextInt(50) + 300;
+        this.attack = rnd.nextInt(20) + 140;
+        this.defense = rnd.nextInt(10) + 50;
         this.job = "Magic";
         this.basic = new Action("Attack", "Basic");
         this.defend = new Action("Guard", "Defend");
@@ -63,9 +68,11 @@ public class Job implements Serializable{
     }
 
     private void setRange(){
-        this.hp = 350;
-        this.attack = 90;
-        this.defense = 80;
+        Random rnd = new Random();
+        rnd.setSeed(System.currentTimeMillis());
+        this.hp = rnd.nextInt(50) + 350;
+        this.attack = rnd.nextInt(20) + 90;
+        this.defense = rnd.nextInt(10) + 80;
         this.job = "Range";
         this.basic = new Action("Attack", "Basic");
         this.defend = new Action("Hide", "Defend");

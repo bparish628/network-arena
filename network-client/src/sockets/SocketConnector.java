@@ -18,40 +18,32 @@ public class SocketConnector extends Controller{
     private static ObjectInputStream readIn;
     private String rawResp;
 
-    public SocketConnector(){
+    public SocketConnector() {
         //make the initial connection and get new port num from server
         try {
             myConn = new Socket(InetAddress.getByName(null), CONN_PORT);
             sendOut = new ObjectOutputStream(myConn.getOutputStream());
             readIn = new ObjectInputStream(myConn.getInputStream());
 
-        } catch(Exception e) {
-            System.out.printf("Error connecting: %s\n",e.getMessage());
+        } catch (Exception e) {
+            System.out.printf("Error connecting: %s\n", e.getMessage());
             System.out.println("Exiting.");
             System.exit(0);
         }
 
         initConnection();
-        Object serverMsg = null;
-        try {
-            while (serverMsg == null) {
-                serverMsg = readIn.readObject();
-                wait(10);
+        String serverMsg = null;
+        WaitForServerThread wfst = new WaitForServerThread("w", readIn);
+        wfst.start();
+        while(!wfst.isComplete()) {
+            try {
+                Thread.sleep(1000);
+            } catch(InterruptedException ie) {
+                break;
             }
-            if (serverMsg instanceof String) {
-                System.out.println((String) serverMsg);
-            } else {
-                System.out.println("OH NOES THAT DOESN'T WORK");
-                System.out.println(serverMsg);
-            }
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
         }
-    }
-
-    public void waitForServer(Object reference) {
-
+        serverMsg = (String)wfst.getMessage();
+        System.out.print(serverMsg);
     }
 
     public void initConnection(){
