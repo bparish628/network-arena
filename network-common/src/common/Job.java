@@ -2,6 +2,9 @@ package common;
 
 import javafx.scene.image.Image;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Job implements Serializable{
@@ -100,5 +103,25 @@ public class Job implements Serializable{
 
     public Image getImage(){
         return image;
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        hp = in.readInt();
+        attack = in.readInt();
+        defense = in.readInt();
+        job = (String) in.readObject();
+        basic = (Action) in.readObject();
+        defend = (Action) in.readObject();
+        special = (Action) in.readObject();
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.writeInt(hp);
+        out.writeInt(attack);
+        out.writeInt(defense);
+        out.writeObject(job);
+        out.writeObject(basic);
+        out.writeObject(defend);
+        out.writeObject(special);
     }
 }
