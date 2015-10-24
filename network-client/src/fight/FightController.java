@@ -33,6 +33,9 @@ public class FightController extends Controller{
     Text stat2;
     Text stat3;
     Text target;
+    Button attackButton;
+    Button defendButton;
+    Button specialButton;
 
     public FightController(){
         /*get user*/
@@ -207,6 +210,12 @@ public class FightController extends Controller{
             logBox.getChildren().remove(0,1);
         }
         logBox.getChildren().add(newLogItem);
+    }
+
+    public void toggleButtons(boolean value) {
+        attackButton.setDisable(value);
+        defendButton.setDisable(value);
+        specialButton.setDisable(value);
     }
 
     private void updateUserHPBar(){
