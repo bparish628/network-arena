@@ -1,9 +1,9 @@
-public class Player {
+public class TestPlayer {
 	private final static int MAX_PLAYERS = 4;
 	private String name;
 	private int num;
 	
-	public Player(String pName, int pNum) {
+	public TestPlayer(String pName, int pNum) {
 		this.name = pName;
 		this.num = pNum;
 	}

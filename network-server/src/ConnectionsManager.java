@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
 import java.util.Timer;
+import common.*;
 
 /**
  * This class is designed to make interacting with the four sockets easier.
@@ -19,6 +20,7 @@ public class ConnectionsManager {
 	private final String CLOSE_MESSAGE = "CLOSE"; //sent to tell clients to exit connection
 	private final String ERROR_MESSAGE = "|ERROR|ERROR|ERROR|"; //used for telling the main class or client that an error occurred
 	private final String hostName = "localhost"; //Not currently used because InetAddress.getByName(null) is better
+	private final static String PW = "ARENA";
 	//private arrays
 	private Socket[] plyrCons; //the actual socket connections
 	private ObjectInputStream[] pConReads; //for reading from a specified socket
@@ -132,8 +134,15 @@ public class ConnectionsManager {
 				plyrCons[0] = ss.accept();
 				pConReads[0] = new ObjectInputStream(plyrCons[0].getInputStream());
 				pConOuts[0] = new ObjectOutputStream(plyrCons[0].getOutputStream());
-				String rsp = (String)pConReads[0].readObject();
-				pConOuts[0].writeInt(port);
+				String rsp = (String)pConReads[0].readObject(); //pw
+				if(rsp.equals(PW)) {
+					pConOuts[0].writeInt(port);
+				} else {
+					pConOuts[0].writeInt(-1); //incorrect pw
+					closeDefaults();
+					ss.close();
+					throw new Exception("Invalid password");
+				}
 				closeDefaults();
 				ss.close();
 				ss = new ServerSocket(port);
@@ -141,12 +150,12 @@ public class ConnectionsManager {
 				ss.close();
 				pConReads[numConnections+1] = new ObjectInputStream(plyrCons[numConnections+1].getInputStream());
 				pConOuts[numConnections+1] = new ObjectOutputStream(plyrCons[numConnections+1].getOutputStream());
-				rsp = (String)pConReads[numConnections+1].readObject();
-				System.out.printf("Socket #%d successfully connected!\nMessage: %s\n",++numConnections,rsp);
+				Player prsp = (Player)pConReads[numConnections+1].readObject();
+				System.out.printf("Socket #%d successfully connected!\nMessage: %s\n",++numConnections,prsp);
 				if(numConnections == 4) {
 					readyForPlay = true;
 				}
-				return rsp;
+				return prsp;
 			} catch(Exception e) {
 				System.out.println("An error occurred while opening socket.");
 				System.out.println("---Socket attempt information---");
