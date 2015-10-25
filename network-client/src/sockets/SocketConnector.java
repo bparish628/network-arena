@@ -1,6 +1,7 @@
 package sockets;
 
 import common.Controller;
+import common.GameUpdate;
 import run.App;
 
 import java.io.*;
@@ -35,10 +36,11 @@ public class SocketConnector extends Controller{
         }
 
         initConnection();
+        listen(); //for game updates
     }
 
-    public String waitForServer() {
-        String serverMsg = null;
+    public GameUpdate waitForServer() {
+        GameUpdate serverMsg = null;
         WaitForServerThread wfst = new WaitForServerThread("w", readIn);
         wfst.start();
         while(!wfst.isComplete()) {
@@ -49,7 +51,11 @@ public class SocketConnector extends Controller{
             }
         }
         App.goToStage(3);
-        serverMsg = (String)wfst.getMessage();
+        serverMsg = (GameUpdate)(wfst.getMessage());
+        if(serverMsg == null) {
+            System.out.println("Nooooooo");
+            return serverMsg;
+        }
         System.out.print(serverMsg);
         return serverMsg;
     }
@@ -71,6 +77,8 @@ public class SocketConnector extends Controller{
             sendOut = new ObjectOutputStream(myConn.getOutputStream());
             readIn = new ObjectInputStream(myConn.getInputStream());
             sendOut.writeObject(getUser());
+            int num = readIn.readInt();
+            getUser().setPlayerNum(num);
             System.out.println("SUCCESSFUL CONNECTION!");
             System.out.println("Waiting for server...");
             listen();

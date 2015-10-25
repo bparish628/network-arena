@@ -11,6 +11,7 @@ public class Player implements Serializable{
 
     private String username;
     private Job selectedClass;
+    private int playerNum;
 
     /*Condition of character*/
     private int currentHP;
@@ -21,6 +22,7 @@ public class Player implements Serializable{
     public Player(){
         username = null;
         selectedClass = null;
+        playerNum = -1;
         guardStatus = false;
     }
 
@@ -28,6 +30,7 @@ public class Player implements Serializable{
         return username;
     }
 
+    public int getPlayerNum() {return playerNum;}
 
     public Job getSelectedClass(){
         return selectedClass;
@@ -45,6 +48,8 @@ public class Player implements Serializable{
         this.selectedClass = new Job(classString);
         this.currentHP = this.selectedClass.getHp();
     }
+
+    public void setPlayerNum(int num) {this.playerNum = num;}
 
     public void setCurrentHP(int hp){
         this.currentHP = hp;
@@ -77,9 +82,23 @@ public class Player implements Serializable{
 
     public Action getQueuedAction(){ return queuedAction;}
 
+    @Override
+    public String toString() {
+        return String.format("server.Player #%d: %s\n", this.playerNum, this.username);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if((o instanceof Player) && (((Player)o).getPlayerNum() == this.playerNum)) {
+            return true;
+        }
+        return false;
+    }
+
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         username = (String) in.readObject();
         selectedClass = (Job) in.readObject();
+        playerNum = in.readInt();
         currentHP = in.readInt();
         guardStatus = in.readBoolean();
         queuedAction = (Action) in.readObject();
@@ -89,6 +108,7 @@ public class Player implements Serializable{
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.writeObject(username);
         out.writeObject(selectedClass);
+        out.writeInt(playerNum);
         out.writeInt(currentHP);
         out.writeBoolean(guardStatus);
         out.writeObject(queuedAction);

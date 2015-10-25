@@ -149,6 +149,8 @@ public class ConnectionsManager {
 				pConReads[numConnections+1] = new ObjectInputStream(plyrCons[numConnections+1].getInputStream());
 				pConOuts[numConnections+1] = new ObjectOutputStream(plyrCons[numConnections+1].getOutputStream());
 				Player prsp = (Player)pConReads[numConnections+1].readObject();
+				prsp.setPlayerNum(numConnections+1);
+				pConOuts[numConnections+1].writeInt(numConnections+1);
 				System.out.printf("Socket #%d successfully connected!\nMessage: %s\n",++numConnections,prsp);
 				if(numConnections == 4) {
 					readyForPlay = true;
@@ -304,17 +306,17 @@ public class ConnectionsManager {
 			}
 		}
 	}
-/*	public void broadcastPlayer(Player plyr) {
+	public void broadcastUpdate(GameUpdate gu) {
 		for(int i = 1; i<pConOuts.length; i++) {
 			if(pConOuts[i] != null) {
 				try {
-					pConOuts[i].writeObject(plyr);
+					pConOuts[i].writeObject(gu);
 				} catch(Exception e) {
 					System.out.println(e);
 				}
 			}
 		}
-	}*/
+	}
 	
 	public void closeAll() {
 		for(ObjectOutputStream pw : pConOuts) {
@@ -353,7 +355,7 @@ public class ConnectionsManager {
 	public Object waitForResponse(int index) {
 		Object response;
 		try {		
-			response = pConReads[index].readLine();
+			response = pConReads[index].readObject();
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 			response = ERROR_MESSAGE;

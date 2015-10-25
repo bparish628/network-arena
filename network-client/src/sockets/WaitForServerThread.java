@@ -1,5 +1,7 @@
 package sockets;
 
+import common.GameUpdate;
+
 import java.io.ObjectInputStream;
 
 /**
@@ -32,11 +34,13 @@ public class WaitForServerThread extends Thread implements Runnable {
             done = true;
             notify();
         } catch(Exception e) {
-            //System.out.println(e.getMessage());
-            //e.printStackTrace();
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         if (msg instanceof String) {
             //System.out.println((String) msg);
+        } else if(msg instanceof GameUpdate) {
+            System.out.printf("Game update:\n%s\n", ((GameUpdate)msg).toString());
         } else {
             System.out.println("OH NOES THAT DOESN'T WORK");
             System.out.println(msg);

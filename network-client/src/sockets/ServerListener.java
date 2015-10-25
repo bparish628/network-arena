@@ -1,5 +1,6 @@
 package sockets;
 
+import common.GameUpdate;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import run.App;
@@ -17,11 +18,18 @@ public class ServerListener{
                     message = in.readObject();
 
                     /*Value to indicate all players are in*/
-                    if (message == "Hi there.") {
+                    if ((message instanceof String) && ((String)message).equals("Hi there.")) {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
                                 App.goToStage(3);
+                            }
+                        });
+                    } else if(message instanceof GameUpdate) {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                        public void run() {
+                                App.updateGameState(((GameUpdate)message));
                             }
                         });
                     }
