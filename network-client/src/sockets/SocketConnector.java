@@ -17,14 +17,16 @@ public class SocketConnector extends Controller{
     private static Socket myConn;
     private static ObjectOutputStream sendOut;
     private static ObjectInputStream readIn;
-    private String rawResp;
+    private ServerListener serverListener;
 
     public SocketConnector() {
         //make the initial connection and get new port num from server
+
         try {
             myConn = new Socket(InetAddress.getByName(null), CONN_PORT);
             sendOut = new ObjectOutputStream(myConn.getOutputStream());
             readIn = new ObjectInputStream(myConn.getInputStream());
+            serverListener = new ServerListener();
 
         } catch (Exception e) {
             System.out.printf("Error connecting: %s\n", e.getMessage());
@@ -54,6 +56,7 @@ public class SocketConnector extends Controller{
 
     public void initConnection(){
         int newPort;
+
         //try to connect to new port
         try {
             System.out.println("Attempting connection...");
@@ -70,7 +73,7 @@ public class SocketConnector extends Controller{
             sendOut.writeObject(getUser());
             System.out.println("SUCCESSFUL CONNECTION!");
             System.out.println("Waiting for server...");
-            waitForServer();
+            listen();
         } catch(Exception e) {
             System.out.printf("Error transferring: %s\n", e.getMessage());
             System.out.println("Exiting.");
@@ -78,8 +81,8 @@ public class SocketConnector extends Controller{
         }
     }
 
-    public void send(String line){
-//        sendOut.writeObject(line);
+    public void listen() {
+        serverListener.listen(readIn);
     }
 
     public void close(){

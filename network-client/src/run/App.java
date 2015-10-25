@@ -4,6 +4,7 @@ import fight.FightView;
 import login.LoginView;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import sockets.ServerListener;
 import waiting.WaitView;
 
 public class App extends Application {
@@ -25,7 +26,6 @@ public class App extends Application {
     }
 
     public static void goToStage(int num){
-        appStage.close();
         switch(num){
             case 1:
                 appStage.setScene(new LoginView().getPage());
@@ -35,6 +35,7 @@ public class App extends Application {
                 appStage.setScene(new WaitView().getPage());
                 break;
             case 3:
+                setTitle("The Network Arena");
                 appStage.setScene(new FightView().getPage());
                 break;
         }

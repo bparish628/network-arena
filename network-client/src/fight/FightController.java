@@ -55,11 +55,6 @@ public class FightController extends Controller{
         setupLabels();
     }
 
-    public void waitForServer() {
-        String res = clientSocket.waitForServer();
-        System.out.println("I got a " + res + "from server");
-    }
-
     private void setupLabels(){
         currentHPText = new Label();
         currentHPText.setPrefWidth(190);
