@@ -4,6 +4,7 @@ import fight.FightView;
 import login.LoginView;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import waiting.WaitView;
 
 public class App extends Application {
 
@@ -18,7 +19,7 @@ public class App extends Application {
         appStage = stage;
 
         /*Set Application Title*/
-        appStage.setTitle("The Network Arena");
+        setTitle("The Network Arena");
         /*Go to Login View*/
         goToStage(1);
     }
@@ -30,9 +31,17 @@ public class App extends Application {
                 appStage.setScene(new LoginView().getPage());
                 break;
             case 2:
+                setTitle("Waiting for more players");
+                appStage.setScene(new WaitView().getPage());
+                break;
+            case 3:
                 appStage.setScene(new FightView().getPage());
                 break;
         }
         appStage.show();
+    }
+
+    private static void setTitle(String title){
+        appStage.setTitle(title);
     }
 }

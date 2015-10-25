@@ -18,8 +18,8 @@ public class EventsController extends Controller{
             if ((!ctrl.getUsernameField().getText().isEmpty() && ctrl.getClasses().getSelectedToggle() != null)) {
                 getUser().setUsername(ctrl.getUsernameField().getText());
                 getUser().setSelectedClass(ctrl.getClasses().getSelectedToggle().getUserData().toString());
+                App.goToStage(2);
                 initSocket();
-                new App().goToStage(2);
             }
         });
     }

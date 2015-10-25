@@ -53,6 +53,9 @@ public class FightController extends Controller{
 
         logBox = new VBox();
         setupLabels();
+    }
+
+    public void waitForServer() {
         String res = clientSocket.waitForServer();
         System.out.println("I got a " + res + "from server");
     }
@@ -183,7 +186,7 @@ public class FightController extends Controller{
         /*Hp bar*/
         VBox hpBox = new VBox();
         hpBox.setAlignment(Pos.CENTER);
-        hpBox.setPadding(new Insets(0,0,0,65));
+        hpBox.setPadding(new Insets(0, 0, 0, 65));
         Text username = new Text(player.getUsername());
         username.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 

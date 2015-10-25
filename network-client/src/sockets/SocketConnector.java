@@ -1,6 +1,7 @@
 package sockets;
 
 import common.Controller;
+import run.App;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -45,6 +46,7 @@ public class SocketConnector extends Controller{
                 break;
             }
         }
+        App.goToStage(3);
         serverMsg = (String)wfst.getMessage();
         System.out.print(serverMsg);
         return serverMsg;
@@ -57,7 +59,7 @@ public class SocketConnector extends Controller{
             System.out.println("Attempting connection...");
             sendOut.writeObject("ARENA");
             newPort = readIn.readInt();
-            System.out.printf("Response from server received! %d", newPort);
+            System.out.printf("Response from server received! %d\n", newPort);
             sendOut.flush();
             sendOut.close();
             readIn.close();
@@ -68,6 +70,7 @@ public class SocketConnector extends Controller{
             sendOut.writeObject(getUser());
             System.out.println("SUCCESSFUL CONNECTION!");
             System.out.println("Waiting for server...");
+            waitForServer();
         } catch(Exception e) {
             System.out.printf("Error transferring: %s\n", e.getMessage());
             System.out.println("Exiting.");
