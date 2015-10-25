@@ -54,7 +54,6 @@ public class App extends Application {
         if(appState == 3) {
             System.out.println(gu); //ugh I don't know.  This isn't where this should go, it needs to call somewhere else.
             Controller.updatePlayers(gu);
-            Controller.listenerActivate();
         }
     }
 

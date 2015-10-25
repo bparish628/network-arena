@@ -1,5 +1,6 @@
 package sockets;
 
+import common.Controller;
 import common.GameUpdate;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -16,6 +17,10 @@ public class ServerListener{
             try {
                 while(message != null) {
                     message = in.readObject();
+
+                    if(message instanceof Integer){
+                        Controller.getUser().setPlayerNum((Integer) message);
+                    }
 
                     /*Value to indicate all players are in*/
                     if ((message instanceof String) && ((String)message).equals("Hi there.")) {

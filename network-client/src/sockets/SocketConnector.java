@@ -28,7 +28,6 @@ public class SocketConnector extends Controller{
             sendOut = new ObjectOutputStream(myConn.getOutputStream());
             readIn = new ObjectInputStream(myConn.getInputStream());
             serverListener = new ServerListener();
-
         } catch (Exception e) {
             System.out.printf("Error connecting: %s\n", e.getMessage());
             System.out.println("Exiting.");
@@ -36,7 +35,6 @@ public class SocketConnector extends Controller{
         }
 
         initConnection();
-        listen(); //for game updates
     }
 
     public GameUpdate waitForServer() {
@@ -77,8 +75,6 @@ public class SocketConnector extends Controller{
             sendOut = new ObjectOutputStream(myConn.getOutputStream());
             readIn = new ObjectInputStream(myConn.getInputStream());
             sendOut.writeObject(getUser());
-            int num = readIn.readInt();
-            getUser().setPlayerNum(num);
             System.out.println("SUCCESSFUL CONNECTION!");
             System.out.println("Waiting for server...");
             listen();

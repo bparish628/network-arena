@@ -150,7 +150,7 @@ public class ConnectionsManager {
 				pConOuts[numConnections+1] = new ObjectOutputStream(plyrCons[numConnections+1].getOutputStream());
 				Player prsp = (Player)pConReads[numConnections+1].readObject();
 				prsp.setPlayerNum(numConnections+1);
-				pConOuts[numConnections+1].writeInt(numConnections+1);
+				pConOuts[numConnections+1].writeObject(numConnections + 1);
 				System.out.printf("Socket #%d successfully connected!\nMessage: %s\n",++numConnections,prsp);
 				if(numConnections == 4) {
 					readyForPlay = true;
