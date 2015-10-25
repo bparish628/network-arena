@@ -22,7 +22,7 @@ public class Player implements Serializable{
     public Player(){
         username = null;
         selectedClass = null;
-        playerNum = -1;
+        playerNum = 1;
         guardStatus = false;
     }
 
@@ -78,9 +78,15 @@ public class Player implements Serializable{
         this.target = target;
     }
 
-    public void setQueuedAction(Action action){ this.queuedAction = action;}
+    public void setQueuedAction(Action action){
+        this.queuedAction = action;}
 
-    public Action getQueuedAction(){ return queuedAction;}
+    public Action getQueuedAction(){
+        if(queuedAction == null){
+            queuedAction = selectedClass.getBasicAction();
+        }
+        return queuedAction;
+    }
 
     @Override
     public String toString() {
