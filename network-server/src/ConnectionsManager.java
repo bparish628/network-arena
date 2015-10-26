@@ -383,55 +383,55 @@ public class ConnectionsManager {
 			for(int i = 1; i <= players.length; i++){
 
 				try{
-					if(players[i-1].isAlive()) {
-						pConOuts[i].reset();
-						pConOuts[i].writeObject("Your turn");
-						request = (ServerRequest) pConReads[i].readObject();
-						Player[] playersArray = players;
-						Player attacker = new Player();
-						Player target = new Player();
-
-						int attackerJ = 0;
-						int targetJ = 0;
-
-						//Find the 2 players
-						for (int j = 0; j < players.length; j++) {
-							if (players[j].getPlayerNum() == request.getAttackerNum()) {
-								attacker = players[j];
-								attackerJ = j;
-							}
-							if (players[j].getPlayerNum() == request.getTargetNum()) {
-								target = players[j];
-								targetJ = j;
-							}
-						}
-
-						//Perform Action
-						switch (request.getSelectedAction().getType()) {
-							case "Basic":
-								Combat.attack(attacker, target);
-								break;
-							case "Guard":
-								Combat.guard(attacker);
-								break;
-							case "Special":
-								Combat.special(attacker, players);
-								break;
-						}
-						playersArray[attackerJ] = attacker;
-						playersArray[targetJ] = target;
-
-						broadcast(playersArray);
-
-						try {
-							Thread.sleep(2000);
-						} catch (InterruptedException ie) {
-							System.out.println("Interrupted.");
-						}
-					}else{
+					if(!players[i-1].isAlive()) {
 						pConOuts[i].close();
 						pConReads[i].close();
 						plyrCons[i].close();
+						continue;
+					}
+					pConOuts[i].reset();
+					pConOuts[i].writeObject("Your turn");
+					request = (ServerRequest) pConReads[i].readObject();
+					Player[] playersArray = players;
+					Player attacker = new Player();
+					Player target = new Player();
+
+					int attackerJ = 0;
+					int targetJ = 0;
+
+					//Find the 2 players
+					for (int j = 0; j < players.length; j++) {
+						if (players[j].getPlayerNum() == request.getAttackerNum()) {
+							attacker = players[j];
+							attackerJ = j;
+						}
+						if (players[j].getPlayerNum() == request.getTargetNum()) {
+							target = players[j];
+							targetJ = j;
+						}
+					}
+
+					//Perform Action
+					switch (request.getSelectedAction().getType()) {
+						case "Basic":
+							Combat.attack(attacker, target);
+							break;
+						case "Guard":
+							Combat.guard(attacker);
+							break;
+						case "Special":
+							Combat.special(attacker, players);
+							break;
+					}
+					playersArray[attackerJ] = attacker;
+					playersArray[targetJ] = target;
+
+					broadcast(playersArray);
+
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException ie) {
+						System.out.println("Interrupted.");
 					}
 				}catch(Exception e){
 					System.out.println(e);

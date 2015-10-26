@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/networking.iml" filepath="$PROJECT_DIR$/networking.iml" />
+      <module fileurl="file://$PROJECT_DIR$/network-client/network-client.iml" filepath="$PROJECT_DIR$/network-client/network-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/network-common/network-common.iml" filepath="$PROJECT_DIR$/network-common/network-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/network-server/network-server.iml" filepath="$PROJECT_DIR$/network-server/network-server.iml" />
     </modules>
   </component>
 </project>

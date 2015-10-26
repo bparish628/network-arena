@@ -1,10 +1,12 @@
 package run;
 
+import common.Controller;
 import done.DoneView;
 import fight.FightView;
 import login.LoginView;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import sockets.SocketConnector;
 import waiting.WaitView;
 
 public class App extends Application {
@@ -41,6 +43,7 @@ public class App extends Application {
             case 4:
                 setTitle("The Network Arena");
                 appStage.setScene(new DoneView("Lose").getPage());
+                SocketConnector.close();
                 break;
             case 5:
                 setTitle("The Network Arena");

@@ -73,7 +73,7 @@ public class SocketConnector extends Controller{
         }
     }
 
-    public void close(){
+    public static void close(){
         try {
             sendOut.close();
             readIn.close();
