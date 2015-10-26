@@ -18,6 +18,7 @@ public class Combat {
     public static void special(Player user, Player players[]){
         user.setGuarding(false);
         for(int i = 0; i < players.length; i++){
+            if(user.equals(players[i])) continue;
             int damage = (user.getSelectedClass().getAttack() / players[i].getSelectedClass().getDefense()) * 40;
             applyDamage(players[i], damage);
         }

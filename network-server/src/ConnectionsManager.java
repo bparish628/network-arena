@@ -5,6 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.*;
 import java.util.Timer;
 import common.*;
+import events.EventsController;
 import sockets.ServerListener;
 
 /**
@@ -15,7 +16,7 @@ public class ConnectionsManager {
 	
 	//constants
 	private final int MAX_CONNS = 4; //max PLAYER conns, 0 is default connection
-	private final int DEFAULT_PORT = 45560; //used to distribute clients across the actual connection ports
+	private final int DEFAULT_PORT = 55560; //used to distribute clients across the actual connection ports
 	private final String CLOSE_MESSAGE = "CLOSE"; //sent to tell clients to exit connection
 	private final String ERROR_MESSAGE = "|ERROR|ERROR|ERROR|"; //used for telling the main class or client that an error occurred
 	private final String hostName = "localhost"; //Not currently used because InetAddress.getByName(null) is better
@@ -300,6 +301,7 @@ public class ConnectionsManager {
 			if(pConOuts[i] != null) {
 				try {
 					pConOuts[i].writeObject(message);
+					pConOuts[i].reset();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -380,8 +382,51 @@ public class ConnectionsManager {
 		while(!ended){
 			for(int i = 1; i <= players.length; i++){
 				try{
+					pConOuts[i].reset();
 					pConOuts[i].writeObject("Your turn");
 					request = (ServerRequest) pConReads[i].readObject();
+					Player[] playersArray = players;
+					Player attacker = new Player();
+					Player target = new Player();
+
+					int attackerJ = 0;
+					int targetJ = 0;
+
+					//Find the 2 players
+					for(int j = 0; j < players.length; j++){
+						if(players[j].getPlayerNum() == request.getAttackerNum()){
+							attacker = players[j];
+							attackerJ = j;
+						}
+						if(players[j].getPlayerNum() == request.getTargetNum()){
+							target = players[j];
+							targetJ = j;
+						}
+					}
+
+					//Perform Action
+					switch(request.getSelectedAction().getType()){
+						case "Basic" :
+							Combat.attack(attacker, target);
+							break;
+						case "Guard" :
+							Combat.guard(attacker);
+							break;
+						case "Special" :
+							Combat.special(attacker, players);
+							break;
+					}
+					playersArray[attackerJ] = attacker;
+					playersArray[targetJ] = target;
+
+					broadcast(playersArray);
+
+					try {
+						Thread.sleep(2000);
+					} catch(InterruptedException ie) {
+						System.out.println("Interrupted.");
+					}
+
 				}catch(Exception e){
 					System.out.println(e);
 				}

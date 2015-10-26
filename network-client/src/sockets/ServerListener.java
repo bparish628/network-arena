@@ -2,9 +2,13 @@ package sockets;
 
 import common.Controller;
 import common.Player;
+import fight.FightController;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.scene.control.ProgressBar;
 import run.App;
+
+import javax.naming.ldap.Control;
 import java.io.ObjectInputStream;
 
 public class ServerListener{
@@ -36,26 +40,31 @@ public class ServerListener{
                 while(message != null) {
                     message = in.readObject();
 
-                    /*set all players*/
-                    if(message instanceof Player[]) {
-                        System.out.println(((Player[]) message)[1].getUsername());
-                        Platform.runLater(new Runnable() {
-                            @Override
-                        public void run() {
-                                Controller.updatePlayers((Player[]) message);
-                            }
-                        });
-                    }
                     /*Action/Target*/
-                    if(message instanceof String && ((String)message).equals("Your turn")) {
-                        System.out.println("yourTurn");
+                    if(message instanceof Player[]) {
+                         /*set all players*/
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
+                                Controller.updatePlayers((Player[]) message);
+                                if(!Controller.getUser().isAlive()) {
+                                    App.goToStage(4);
+                                }
+                                if(!Controller.getPlayers()[0].isAlive() && !Controller.getPlayers()[1].isAlive() && !Controller.getPlayers()[2].isAlive()){
+                                    App.goToStage(5);
+                                }
+                            }
+                        });
+                    }else if(message instanceof String && ((String)message).equals("Your turn")) {
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                FightController.updateLog("It's my turn!");
                                 Controller.getUser().setMyTurn(true);
                             }
                         });
                     }
+
                 }
             } catch(Exception e) {
                 System.out.println(e);

@@ -9,7 +9,7 @@ import java.net.Socket;
 
 public class SocketConnector extends Controller{
 
-    private final static int CONN_PORT = 45560;
+    private final static int CONN_PORT = 55560;
     private final static String HOST_NAME = "localhost";
     private final static String ERROR_MESSAGE = "|ERROR|ERROR|ERROR|";
     private static Socket myConn;
@@ -82,39 +82,6 @@ public class SocketConnector extends Controller{
             System.out.println(e);
         }
     }
-//
-//    public static void main(String[] args) {
-//
-//
-//        Scanner in = new Scanner(System.in);
-//        String s;
-//        try {
-//            rawResp = readIn.readLine();
-//            //this will be the player number
-//            System.out.println(rawResp);
-//            System.out.println("YOU ARE PLAYER #" + rawResp);
-//            System.out.print("Enter username: ");
-//            s = in.nextLine();
-//            plyr = new Player(s, Integer.parseInt(rawResp));
-//
-//        } catch(Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//        try {
-//            System.out.printf("You are %s", plyr);
-//            System.out.println("Waiting for more players...");
-//            rawResp = readIn.readLine();
-//            System.out.printf("server.Server greeting: %s\n", rawResp);
-//        } catch(Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//        //persist until user dc's
-//        System.out.println("k to disconnect");
-//        while(!in.next().equals("k")) {
-//            System.out.println("k to disconnect");
-//        }
-//
-//    }
 
 }
 

@@ -7,7 +7,7 @@ public class Server {
 
 	private final static String hostName = "localhost";
 	private final static int MAX_PLAYERS = 4;
-	private final static int[] PORTS = {45561,45570,45580,45590};
+	private final static int[] PORTS = {55561,55570,55580,55590};
 	private static Player[] plyrs;
 	private final String ERROR_MESSAGE = "|ERROR|ERROR|ERROR|"; //used for telling the main class or client that an error occurred
 	
@@ -32,12 +32,10 @@ public class Server {
 		cnnMgr.broadcast("Hi there.");
 		try {
 			Thread.sleep(2000);
-		} catch(InterruptedException ie
-	)
+		} catch(InterruptedException ie) {
+			System.out.println("Interrupted.");
+		}
 
-	{
-		System.out.println("Interrupted.");
-	}
 		System.out.println("Done waiting, sending update.");
 		cnnMgr.broadcast(plyrs);
 		System.out.println("Done. Exiting.");

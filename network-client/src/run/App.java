@@ -1,5 +1,6 @@
 package run;
 
+import done.DoneView;
 import fight.FightView;
 import login.LoginView;
 import javafx.application.Application;
@@ -37,8 +38,20 @@ public class App extends Application {
                 setTitle("The Network Arena");
                 appStage.setScene(new FightView().getPage());
                 break;
+            case 4:
+                setTitle("The Network Arena");
+                appStage.setScene(new DoneView("Lose").getPage());
+                break;
+            case 5:
+                setTitle("The Network Arena");
+                appStage.setScene(new DoneView("Win").getPage());
+                break;
         }
         appStage.show();
+    }
+
+    public static void closeStage(){
+        appStage.close();
     }
 
     private static void setTitle(String title){

@@ -1,5 +1,7 @@
 package common;
 
+import fight.FightController;
+import run.App;
 import sockets.SocketConnector;
 
 public class Controller {
@@ -36,16 +38,12 @@ public class Controller {
                 j = 1;
             }else{
                 result[i-j] = p[i];
-
             }
         }
         players = result;
-        for(int i = 0; i<players.length; i++){
-            System.out.println(players[i].getUsername());
-        }
     }
 
-    public Player findPlayer(int number) {
+    public static Player findPlayer(int number) {
         Player p = new Player();
         for(int i = 0; i < players.length; i++){
             if(players[i].getPlayerNum() == number){

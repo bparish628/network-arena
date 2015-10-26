@@ -3,6 +3,8 @@ package fight;
 import events.EventsController;
 import common.Controller;
 import common.Player;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -14,6 +16,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import run.App;
+import sockets.ServerListener;
 
 public class FightController extends Controller{
     /*User*/
@@ -27,7 +31,7 @@ public class FightController extends Controller{
     ProgressBar player2HpBar;
     ProgressBar player3HpBar;
     ProgressBar player4HpBar;
-    VBox logBox;
+    static VBox logBox;
     Label currentHPText;
     Text stat1;
     Text stat2;
@@ -64,6 +68,7 @@ public class FightController extends Controller{
         stat2 = new Text();
         stat3 = new Text();
         target = new Text();
+        new Thread(updateHpBars).start();
     }
     public HBox getActionMenu() {
         /*Set up the container*/
@@ -142,7 +147,7 @@ public class FightController extends Controller{
         target.setText(user.getTarget().getUsername());
         targetLine.getChildren().addAll(Target, target);
 
-        view.getChildren().addAll(hpLabel, userHpBar, currentHPText, StatsLabel, statLine1, statLine2, statLine3, targetLine, imageBox);
+        view.getChildren().addAll(hpLabel, userHpBar, StatsLabel, statLine1, statLine2, statLine3, targetLine, imageBox);
 
 
         return view;
@@ -212,7 +217,7 @@ public class FightController extends Controller{
         return oppBox;
     }
 
-    public void updateLog(String text){
+    public static void updateLog(String text){
         Text newLogItem = new Text(text);
         if(logBox.getChildren().size() > 4){
             logBox.getChildren().remove(0,1);
@@ -230,13 +235,22 @@ public class FightController extends Controller{
         target.setText(user.getTarget().getUsername());
     }
 
-    private void updateUserHPBar(){
-        currentHPText.setText(Integer.toString(user.getCurrentHP()) + "/" + Integer.toString(user.getSelectedClass().getHp()));
-        updateProgressBar(userHpBar, user);
+    public void updateOpponentsHPBar(){
+        updateProgressBar(player2HpBar, getPlayers()[0]);
+        updateProgressBar(player3HpBar, getPlayers()[1]);
+        updateProgressBar(player4HpBar, getPlayers()[2]);
+    }
+
+    public void updateUserHPBar(){
+//        currentHPText.setText(Integer.toString(getUser().getCurrentHP()) + "/" + Integer.toString(getUser().getSelectedClass().getHp()));
+        updateProgressBar(userHpBar, getUser());
     }
 
     private void updateProgressBar(ProgressBar bar, Player player){
         double hpPercent = (double)(player.getCurrentHP())/(double)(player.getSelectedClass().getHp());
+        if(hpPercent < 0){
+            hpPercent = 0;
+        }
         bar.setProgress(hpPercent);
         if(hpPercent > .3){
             bar.setStyle("-fx-accent: green");
@@ -244,4 +258,18 @@ public class FightController extends Controller{
             bar.setStyle("-fx-accent: crimson");
         }
     }
+    /*This task listens to the server*/
+    private Task updateHpBars = new Task<Void>() {
+        @Override public Void call() {
+            while(true){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ie) {
+                    System.out.println("Interrupted.");
+                }
+                updateOpponentsHPBar();
+                updateUserHPBar();
+            }
+        }
+    };
 }

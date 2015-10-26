@@ -34,8 +34,6 @@ public class EventsController extends Controller{
                 ctrl.updateLog(getUser().getQueuedAction().getName() + " was activated!");
                 try {
                     SocketConnector.send(new ServerRequest(getUser().getSelectedClass().getBasicAction(), getUser().getTarget().getPlayerNum(), getUser().getPlayerNum()));
-//                    SocketConnector.send(getUser().getSelectedClass().getBasicAction().getType());
-//                    SocketConnector.send(getUser().getTarget().getPlayerNum());
                     getUser().setMyTurn(false);
                 }catch(Exception exception){
                     System.out.println(exception);
@@ -46,15 +44,31 @@ public class EventsController extends Controller{
 
     public static void defendButton(FightController ctrl, Button buttonNode){
         buttonNode.setOnAction((ActionEvent e) -> {
-            getUser().setQueuedAction(getUser().getSelectedClass().getDefendAction());
-            ctrl.updateLog(getUser().getQueuedAction().getName() + " is queued!");
+            if(getUser().isMyTurn() && getUser().getTarget().getUsername() != null){
+                getUser().setQueuedAction(getUser().getSelectedClass().getDefendAction());
+                ctrl.updateLog(getUser().getQueuedAction().getName() + " was activated!");
+                try {
+                    SocketConnector.send(new ServerRequest(getUser().getSelectedClass().getDefendAction(), getUser().getTarget().getPlayerNum(), getUser().getPlayerNum()));
+                    getUser().setMyTurn(false);
+                }catch(Exception exception){
+                    System.out.println(exception);
+                }
+            }
         });
     }
 
     public static void specialButton(FightController ctrl, Button buttonNode){
         buttonNode.setOnAction((ActionEvent e) -> {
-            getUser().setQueuedAction(getUser().getSelectedClass().getSpecialAction());
-            ctrl.updateLog(getUser().getQueuedAction().getName() + " is queued!");
+            if(getUser().isMyTurn() && getUser().getTarget().getUsername() != null){
+                getUser().setQueuedAction(getUser().getSelectedClass().getSpecialAction());
+                ctrl.updateLog(getUser().getQueuedAction().getName() + " was activated!");
+                try {
+                    SocketConnector.send(new ServerRequest(getUser().getSelectedClass().getSpecialAction(), getUser().getTarget().getPlayerNum(), getUser().getPlayerNum()));
+                    getUser().setMyTurn(false);
+                }catch(Exception exception){
+                    System.out.println(exception);
+                }
+            }
         });
     }
 
@@ -74,10 +88,9 @@ public class EventsController extends Controller{
                                     opponentsNode.getChildren().get(i).setStyle(oppNode.getStyle() + " -fx-border-color: black;");
                                 }
                             }
+                            ctrl.updateLog("Target selected: " + getUser().getTarget().getUsername());
                         }
                     });
         }
     }
-
-
 }
