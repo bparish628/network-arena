@@ -2,45 +2,57 @@ package sockets;
 
 import common.Controller;
 import common.GameUpdate;
+import common.Player;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import run.App;
 import java.io.ObjectInputStream;
+import java.rmi.server.ExportException;
 
 public class ServerListener{
     private Object message = new Object();
+    private Player[] playerUpdate;
     private ObjectInputStream in;
 
     /*This task listens to the server*/
     private Task async = new Task<Void>() {
         @Override public Void call() {
             try {
+                message = in.readObject();
+                Controller.getUser().setPlayerNum((Integer) message);
+
+                message = in.readObject();
+                if ((message instanceof String) && ((String)message).equals("Hi there.")) {
+                    message = in.readObject();
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            /*Value to indicate all players are in*/
+                            if(message instanceof Player[]) {
+                                Controller.updatePlayers((Player[]) message);
+                            }
+                            App.goToStage(3);
+                        }
+                    });
+                }
+
                 while(message != null) {
                     message = in.readObject();
 
-                    if(message instanceof Integer){
-                        Controller.getUser().setPlayerNum((Integer) message);
-                    }
-
                     /*Value to indicate all players are in*/
-                    if ((message instanceof String) && ((String)message).equals("Hi there.")) {
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                App.goToStage(3);
-                            }
-                        });
-                    } else if(message instanceof GameUpdate) {
+                    if(message instanceof Player[]) {
+                        System.out.println(((Player[]) message)[1].getUsername());
                         Platform.runLater(new Runnable() {
                             @Override
                         public void run() {
-                                App.updateGameState(((GameUpdate)message));
+
                             }
                         });
                     }
                 }
             } catch(Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println("ERROR");
+                System.out.println(e);
             }
 
             return null;

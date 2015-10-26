@@ -50,13 +50,6 @@ public class App extends Application {
         appStage.show();
     }
 
-    public static void updateGameState(GameUpdate gu) {
-        if(appState == 3) {
-            System.out.println(gu); //ugh I don't know.  This isn't where this should go, it needs to call somewhere else.
-            Controller.updatePlayers(gu);
-        }
-    }
-
     private static void setTitle(String title){
         appStage.setTitle(title);
     }

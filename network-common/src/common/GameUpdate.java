@@ -26,6 +26,8 @@ public class GameUpdate implements Serializable{
         nextPlayer = np;
     }
 
+    public GameUpdate(){}
+
     public Player getPlayer(int index) {
         if(index >= 0 && index < plyrs.length) {
             if(plyrs[index] != null) {

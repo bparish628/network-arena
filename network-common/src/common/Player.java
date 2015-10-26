@@ -100,24 +100,4 @@ public class Player implements Serializable{
         }
         return false;
     }
-
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        username = (String) in.readObject();
-        selectedClass = (Job) in.readObject();
-        playerNum = in.readInt();
-        currentHP = in.readInt();
-        guardStatus = in.readBoolean();
-        queuedAction = (Action) in.readObject();
-        target = (Player) in.readObject();
-    }
-
-    private void writeObject(ObjectOutputStream out) throws IOException {
-        out.writeObject(username);
-        out.writeObject(selectedClass);
-        out.writeInt(playerNum);
-        out.writeInt(currentHP);
-        out.writeBoolean(guardStatus);
-        out.writeObject(queuedAction);
-        out.writeObject(target);
-    }
 }

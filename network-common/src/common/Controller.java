@@ -26,25 +26,22 @@ public class Controller {
         }
         return players;
     }
-    public static Player[] updatePlayers(GameUpdate gu) {
+    public static void updatePlayers(Player[] p) {
         Player[] result = new Player[3];
-        try {
-            int j = 0;
-            for(int i = 0; i<result.length; i++) {
-                if(gu.getPlayer(i).equals(getUser())) {
-                    j++;//j = i+1
-                    i--;//i = i-1
-                    continue; //i-1 incremented to i.  i preserved, j = i+1
-                }
-                result[i] = gu.getPlayer(j);
-                j++;
+        int j = 0;
+        for(int i = 0; i<p.length; i++) {
+            if(p[i].equals(getUser())) {
+                user = p[i];
+                j = 1;
+            }else{
+                result[i-j] = p[i];
+
             }
-            return result;
-        } catch(Exception e) {
-            e.printStackTrace();
         }
-        System.out.println("OH NO from Controller.updatePlayers");
-        return null;
+        players = result;
+        for(int i = 0; i<players.length; i++){
+            System.out.println(players[i].getUsername());
+        }
     }
 
     public static void initSocket(){

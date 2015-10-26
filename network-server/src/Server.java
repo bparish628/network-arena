@@ -32,19 +32,23 @@ public class Server {
 		cnnMgr.broadcast("Hi there.");
 		try {
 			Thread.sleep(2000);
-		} catch(InterruptedException ie) {
-			System.out.println("Interrupted.");
-		}
+		} catch(InterruptedException ie
+	)
+
+	{
+		System.out.println("Interrupted.");
+	}
 		System.out.println("Done waiting, sending update.");
-		cnnMgr.broadcastUpdate(
-				new GameUpdate(
-						plyrs,
-						plyrs[1].getQueuedAction(),
-						plyrs[1].getTarget().getPlayerNum(),
-						plyrs[1].getPlayerNum(),
-						plyrs[2].getPlayerNum()
-				)
-		);
+//		cnnMgr.broadcastUpdate(
+//				new GameUpdate(
+//						plyrs,
+//						plyrs[1].getQueuedAction(),
+//						plyrs[1].getTarget().getPlayerNum(),
+//						plyrs[1].getPlayerNum(),
+//						plyrs[2].getPlayerNum()
+//				)
+//		);
+		cnnMgr.broadcast(plyrs);
 		System.out.println("Done. Exiting.");
 	}
 
