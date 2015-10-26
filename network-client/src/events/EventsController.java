@@ -1,6 +1,7 @@
 package events;
 
 import common.Controller;
+import common.ServerRequest;
 import fight.FightController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,9 +11,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import login.LoginController;
 import run.App;
+import sockets.SocketConnector;
+
+import java.io.ObjectOutputStream;
 
 public class EventsController extends Controller{
-
     public static void connectButton(LoginController ctrl, Button buttonNode){
         buttonNode.setOnAction((ActionEvent e) -> {
             if ((!ctrl.getUsernameField().getText().isEmpty() && ctrl.getClasses().getSelectedToggle() != null)) {
@@ -26,8 +29,18 @@ public class EventsController extends Controller{
 
     public static void attackButton(FightController ctrl, Button buttonNode){
         buttonNode.setOnAction((ActionEvent e) -> {
-            getUser().setQueuedAction(getUser().getSelectedClass().getBasicAction());
-            ctrl.updateLog(getUser().getQueuedAction().getName() + " is queued!");
+            if(getUser().isMyTurn() && getUser().getTarget().getUsername() != null){
+                getUser().setQueuedAction(getUser().getSelectedClass().getBasicAction());
+                ctrl.updateLog(getUser().getQueuedAction().getName() + " was activated!");
+                try {
+                    SocketConnector.send(new ServerRequest(getUser().getSelectedClass().getBasicAction(), getUser().getTarget().getPlayerNum(), getUser().getPlayerNum()));
+//                    SocketConnector.send(getUser().getSelectedClass().getBasicAction().getType());
+//                    SocketConnector.send(getUser().getTarget().getPlayerNum());
+                    getUser().setMyTurn(false);
+                }catch(Exception exception){
+                    System.out.println(exception);
+                }
+            }
         });
     }
 
@@ -56,6 +69,7 @@ public class EventsController extends Controller{
                             for(int i = 0; i < 3; i++){
                                 if(i == playerNumber){
                                     oppNode.setStyle(oppNode.getStyle() + " -fx-border-color: gold;");
+                                    ctrl.updateTarget();
                                 }else {
                                     opponentsNode.getChildren().get(i).setStyle(oppNode.getStyle() + " -fx-border-color: black;");
                                 }

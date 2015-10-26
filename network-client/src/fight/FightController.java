@@ -136,7 +136,13 @@ public class FightController extends Controller{
         stat3.setText(Integer.toString(user.getSelectedClass().getDefense()));
         statLine3.getChildren().addAll(StatLabel3, stat3);
 
-        view.getChildren().addAll(hpLabel, userHpBar, currentHPText, StatsLabel, statLine1, statLine2, statLine3, imageBox);
+        HBox targetLine = new HBox();
+        targetLine.setPadding(new Insets(0, 0, 0, 15));
+        Label Target = new Label("Target: ");
+        target.setText(user.getTarget().getUsername());
+        targetLine.getChildren().addAll(Target, target);
+
+        view.getChildren().addAll(hpLabel, userHpBar, currentHPText, StatsLabel, statLine1, statLine2, statLine3, targetLine, imageBox);
 
 
         return view;
@@ -218,6 +224,10 @@ public class FightController extends Controller{
         attackButton.setDisable(value);
         defendButton.setDisable(value);
         specialButton.setDisable(value);
+    }
+
+    public void updateTarget(){
+        target.setText(user.getTarget().getUsername());
     }
 
     private void updateUserHPBar(){

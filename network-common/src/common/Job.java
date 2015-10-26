@@ -14,6 +14,7 @@ public class Job implements Serializable{
     private int defense;
     private String job;
     private transient Image image;
+    private String imageURL;
     private Action basic;
     private Action defend;
     private Action special;
@@ -38,7 +39,8 @@ public class Job implements Serializable{
         this.basic = basic;
         this.defend = defend;
         this.special = special;
-        this.image = new Image("/images/" + image + ".png", 50, 75, false, false);;
+        this.imageURL = "/images/" + image + ".png";
+        this.image = new Image("/images/" + image + ".png", 50, 75, false, false);
     }
 
     private void setMelee(){
@@ -51,6 +53,7 @@ public class Job implements Serializable{
         this.basic = new Action("Attack", "Basic");
         this.defend = new Action("Defend", "Defend");
         this.special = new Action("Whirlwind", "Special");
+        this.imageURL = "/images/melee.png";
         this.image = new Image("/images/melee.png", 50, 75, false, false);
     }
 
@@ -64,6 +67,7 @@ public class Job implements Serializable{
         this.basic = new Action("Attack", "Basic");
         this.defend = new Action("Guard", "Defend");
         this.special = new Action("Firestorm", "Special");
+        this.imageURL = "/images/magic.png";
         this.image = new Image("/images/magic.png", 50, 75, false, false);
     }
 
@@ -77,6 +81,7 @@ public class Job implements Serializable{
         this.basic = new Action("Attack", "Basic");
         this.defend = new Action("Hide", "Defend");
         this.special = new Action("Multishot", "Special");
+        this.imageURL = "/images/range.png";
         this.image = new Image("/images/range.png", 50, 75, false, false);
     }
 
@@ -109,6 +114,9 @@ public class Job implements Serializable{
     }
 
     public Image getImage(){
+        if(image == null){
+            return new Image(imageURL, 50, 75, false, false);
+        }
         return image;
     }
 
@@ -116,6 +124,7 @@ public class Job implements Serializable{
         hp = in.readInt();
         attack = in.readInt();
         defense = in.readInt();
+        imageURL = (String) in.readObject();
         job = (String) in.readObject();
         basic = (Action) in.readObject();
         defend = (Action) in.readObject();
@@ -127,6 +136,7 @@ public class Job implements Serializable{
         out.writeInt(attack);
         out.writeInt(defense);
         out.writeObject(job);
+        out.writeObject(imageURL);
         out.writeObject(basic);
         out.writeObject(defend);
         out.writeObject(special);

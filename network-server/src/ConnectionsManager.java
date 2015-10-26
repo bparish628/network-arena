@@ -5,6 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.*;
 import java.util.Timer;
 import common.*;
+import sockets.ServerListener;
 
 /**
  * This class is designed to make interacting with the four sockets easier.
@@ -306,17 +307,6 @@ public class ConnectionsManager {
 			}
 		}
 	}
-	public void broadcastUpdate(GameUpdate gu) {
-		for(int i = 1; i<pConOuts.length; i++) {
-			if(pConOuts[i] != null) {
-				try {
-					pConOuts[i].writeObject(gu);
-				} catch(Exception e) {
-					System.out.println(e);
-				}
-			}
-		}
-	}
 	
 	public void closeAll() {
 		for(ObjectOutputStream pw : pConOuts) {
@@ -380,6 +370,23 @@ public class ConnectionsManager {
 			}
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
+		}
+	}
+
+	public void startBattle(Player[] players){
+		boolean ended = false;
+		ServerRequest request;
+
+		while(!ended){
+			for(int i = 1; i <= players.length; i++){
+				try{
+					pConOuts[i].writeObject("Your turn");
+					request = (ServerRequest) pConReads[i].readObject();
+				}catch(Exception e){
+					System.out.println(e);
+				}
+			}
+
 		}
 	}
 }

@@ -1,17 +1,14 @@
 package sockets;
 
 import common.Controller;
-import common.GameUpdate;
 import common.Player;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import run.App;
 import java.io.ObjectInputStream;
-import java.rmi.server.ExportException;
 
 public class ServerListener{
     private Object message = new Object();
-    private Player[] playerUpdate;
     private ObjectInputStream in;
 
     /*This task listens to the server*/
@@ -27,7 +24,7 @@ public class ServerListener{
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            /*Value to indicate all players are in*/
+                            /*set all players*/
                             if(message instanceof Player[]) {
                                 Controller.updatePlayers((Player[]) message);
                             }
@@ -39,19 +36,28 @@ public class ServerListener{
                 while(message != null) {
                     message = in.readObject();
 
-                    /*Value to indicate all players are in*/
+                    /*set all players*/
                     if(message instanceof Player[]) {
                         System.out.println(((Player[]) message)[1].getUsername());
                         Platform.runLater(new Runnable() {
                             @Override
                         public void run() {
-
+                                Controller.updatePlayers((Player[]) message);
+                            }
+                        });
+                    }
+                    /*Action/Target*/
+                    if(message instanceof String && ((String)message).equals("Your turn")) {
+                        System.out.println("yourTurn");
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                Controller.getUser().setMyTurn(true);
                             }
                         });
                     }
                 }
             } catch(Exception e) {
-                System.out.println("ERROR");
                 System.out.println(e);
             }
 

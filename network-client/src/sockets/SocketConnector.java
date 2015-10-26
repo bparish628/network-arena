@@ -1,13 +1,10 @@
 package sockets;
 
 import common.Controller;
-import common.GameUpdate;
-import run.App;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Scanner;
 
 
 public class SocketConnector extends Controller{
@@ -35,27 +32,6 @@ public class SocketConnector extends Controller{
         }
 
         initConnection();
-    }
-
-    public GameUpdate waitForServer() {
-        GameUpdate serverMsg = null;
-        WaitForServerThread wfst = new WaitForServerThread("w", readIn);
-        wfst.start();
-        while(!wfst.isComplete()) {
-            try {
-                Thread.sleep(1000);
-            } catch(InterruptedException ie) {
-                break;
-            }
-        }
-        App.goToStage(3);
-        serverMsg = (GameUpdate)(wfst.getMessage());
-        if(serverMsg == null) {
-            System.out.println("Nooooooo");
-            return serverMsg;
-        }
-        System.out.print(serverMsg);
-        return serverMsg;
     }
 
     public void initConnection(){
@@ -87,6 +63,14 @@ public class SocketConnector extends Controller{
 
     public void listen() {
         serverListener.listen(readIn);
+    }
+
+    public static void send(Object obj){
+        try {
+            sendOut.writeObject(obj);
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }
 
     public void close(){

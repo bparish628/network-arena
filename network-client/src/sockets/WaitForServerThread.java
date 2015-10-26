@@ -1,6 +1,6 @@
 package sockets;
 
-import common.GameUpdate;
+import common.ServerRequest;
 
 import java.io.ObjectInputStream;
 
@@ -39,8 +39,8 @@ public class WaitForServerThread extends Thread implements Runnable {
         }
         if (msg instanceof String) {
             //System.out.println((String) msg);
-        } else if(msg instanceof GameUpdate) {
-            System.out.printf("Game update:\n%s\n", ((GameUpdate)msg).toString());
+        } else if(msg instanceof ServerRequest) {
+            System.out.printf("Game update:\n%s\n", ((ServerRequest)msg).toString());
         } else {
             System.out.println("OH NOES THAT DOESN'T WORK");
             System.out.println(msg);

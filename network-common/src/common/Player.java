@@ -12,6 +12,7 @@ public class Player implements Serializable{
     private String username;
     private Job selectedClass;
     private int playerNum;
+    private boolean myTurn;
 
     /*Condition of character*/
     private int currentHP;
@@ -57,6 +58,14 @@ public class Player implements Serializable{
 
     public void setGuarding(boolean guard){
          this.guardStatus = guard;
+    }
+
+    public void setMyTurn(boolean turn){
+        this.myTurn = turn;
+    }
+
+    public boolean isMyTurn(){
+        return myTurn;
     }
 
     public boolean isAlive(){

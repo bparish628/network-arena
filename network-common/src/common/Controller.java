@@ -26,6 +26,7 @@ public class Controller {
         }
         return players;
     }
+
     public static void updatePlayers(Player[] p) {
         Player[] result = new Player[3];
         int j = 0;
@@ -43,6 +44,22 @@ public class Controller {
             System.out.println(players[i].getUsername());
         }
     }
+
+    public Player findPlayer(int number) {
+        Player p = new Player();
+        for(int i = 0; i < players.length; i++){
+            if(players[i].getPlayerNum() == number){
+                p = players[i];
+                break;
+            }
+            if(user.getPlayerNum() == number){
+                p = user;
+                break;
+            }
+        }
+        return p;
+    }
+
 
     public static void initSocket(){
         clientSocket = new SocketConnector();
