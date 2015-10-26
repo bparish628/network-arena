@@ -304,7 +304,7 @@ public class ConnectionsManager {
 					pConOuts[i].reset();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+//					e.printStackTrace();
 				}
 			}
 		}
@@ -423,8 +423,13 @@ public class ConnectionsManager {
 							Combat.special(attacker, players);
 							break;
 					}
+					System.out.println(attacker.getUsername() + " is attacking " + target.getUsername());
+
+
 					playersArray[attackerJ] = attacker;
 					playersArray[targetJ] = target;
+
+					System.out.println("Sending users.");
 
 					broadcast(playersArray);
 
@@ -434,7 +439,7 @@ public class ConnectionsManager {
 						System.out.println("Interrupted.");
 					}
 				}catch(Exception e){
-					System.out.println(e);
+
 				}
 
 			}

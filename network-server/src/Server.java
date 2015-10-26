@@ -38,7 +38,7 @@ public class Server {
 
 		System.out.println("Done waiting, sending update.");
 		cnnMgr.broadcast(plyrs);
-		System.out.println("Done. Exiting.");
+		System.out.println("Done. Starting Battle.");
 
 		cnnMgr.startBattle(plyrs);
 	}
